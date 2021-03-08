@@ -1,4 +1,4 @@
-package plateau;
+package partie;
 
 import caracteristiquesPiece.Couleur;
 import caracteristiquesPiece.Forme;
@@ -43,5 +43,17 @@ public class Piece {
 	
 	public void attribuerPosition (Position p) {
 		pos = p;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		Piece p = (Piece) obj;
+
+		if (this == p) {
+			return true;
+		}
+
+		return (this.couleur.equals(p.couleur) && this.forme.equals(p.forme) && this.hauteur.equals(p.hauteur) 
+				&& this.pleineOuCreuse.equals(p.pleineOuCreuse) && this.pos.equals(p.pos));
 	}
 }
