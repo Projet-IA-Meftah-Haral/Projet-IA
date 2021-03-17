@@ -1,10 +1,6 @@
 package partie;
 
-import caracteristiquesPiece.Couleur;
-import caracteristiquesPiece.Forme;
-import caracteristiquesPiece.Hauteur;
-import caracteristiquesPiece.PleineOuCreuse;
-import caracteristiquesPiece.Position;
+import caracteristiquesPiece.*;
 
 public class Piece {
 	private Couleur couleur;
@@ -55,5 +51,9 @@ public class Piece {
 
 		return (this.couleur.equals(p.couleur) && this.forme.equals(p.forme) && this.hauteur.equals(p.hauteur) 
 				&& this.pleineOuCreuse.equals(p.pleineOuCreuse) && this.pos.equals(p.pos));
+	}
+	
+	public boolean caracteristiqueEnCommun(Piece p) {
+		return (couleur==p.couleur || forme==p.forme || hauteur==p.hauteur || pleineOuCreuse==p.pleineOuCreuse);
 	}
 }

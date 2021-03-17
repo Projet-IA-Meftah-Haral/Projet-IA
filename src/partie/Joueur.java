@@ -5,11 +5,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import caracteristiquesPiece.Couleur;
-import caracteristiquesPiece.Forme;
-import caracteristiquesPiece.Hauteur;
-import caracteristiquesPiece.PleineOuCreuse;
-import caracteristiquesPiece.Position;
+import caracteristiquesPiece.*;
 
 public class Joueur {
 	
@@ -19,6 +15,10 @@ public class Joueur {
 	public Joueur(String n) {
 		nom = n;
 		piecesJouees = new ArrayList<>();
+	}
+
+	public String getNom() {
+		return nom;
 	}
 
 	/**
@@ -33,7 +33,7 @@ public class Joueur {
 		Hauteur hauteur = null;
 		PleineOuCreuse pleineOuCreuse = null;
 		
-		System.out.println("Veuillez entrer les caracteristiques de la piece s'il-vous-plait.");
+		System.out.println(nom.toUpperCase() + ", veuillez entrer les caracteristiques de la piece s'il-vous-plait.");
 		
 		while(!c.equals("B") && !c.equals("N")) {
 			try {
@@ -119,13 +119,13 @@ public class Joueur {
 	}
 	
 	/**
-	 * Demande au joueur après avoir recu sa piece, où il veut la deposer
-	 * @param piece piece que l'adversaire lui a donne
+	 * Demande au joueur après avoir reçu sa piece, où il veut la deposer
+	 * @param piece que l'adversaire lui a donnée
 	 * @param sc le scanner d'E/S
 	 */
-	public void deposerPiece(Piece piece, Scanner sc) {
+	public void deposerPiece(Piece piece, Plateau plateau, Scanner sc) {
 		System.out.println("");
-		System.out.println("A quelle position voulez-vous placer cette piece (plateau 4x4) ?");
+		System.out.println(nom.toUpperCase() + ", à quelle position voulez-vous placer cette piece (plateau 4x4) ?");
 		
 		int x=0, y=0;
 		
@@ -170,16 +170,128 @@ public class Joueur {
 		piecesJouees.add(piece);
 	}
 
-	public String getNom() {
-		return nom;
+	public boolean aGagne() {
+		return ( victoireDiagonale() || vicroireLigne() || victoireColonne() );
 	}
-
+	
 	/**
 	 * 
 	 * @return retourne false si le joueur n'a pas gagné, vrai sinon
 	 */
-	public boolean a_gg(){
-		return false;
+	public boolean victoireDiagonale() {
+		boolean aGagne = false;
+		List<Position[]> diagonales = new ArrayList<>();
+		Position[] d1 = {new Position(1,1), new Position(2,2), new Position(3,3), new Position(4,4)};
+		Position[] d2 = {new Position(1,4), new Position(2,3), new Position(3,2), new Position(4,1)};
+		diagonales.add(d1);
+		diagonales.add(d2);
+		
+		List<Piece> solution = new ArrayList<>();
+		for(Position[] d : diagonales) {
+			boolean memePos = false;
+			for(int i=0; i<d.length; i++) {
+				for(Piece p : piecesJouees) {
+					if(d[i].equals(p.getPos())) {
+						solution.add(p);
+						memePos = true;
+						break;
+					}
+				}
+				if(!memePos) break;
+			}
+			
+			if(solution.size() == d.length) {
+				aGagne = true;
+				for(int i=0; i<solution.size()-1; i++) {
+					for(int j=i+1; j<solution.size(); j++) {
+						if(!solution.get(i).caracteristiqueEnCommun(solution.get(j))) {
+							aGagne = false;
+							break;
+						}
+					}
+					if(!aGagne) break;
+				}
+				if(aGagne) return true;
+			}
+			solution.clear();
+		}
+		return aGagne;
 	}
-}	
 	
+	public boolean vicroireLigne() {
+		boolean aGagne = false;
+		List<Piece> solution = new ArrayList<>();
+
+		for(int i=0; i<piecesJouees.size(); i++) {
+			Piece p1 = piecesJouees.get(0);
+			piecesJouees.remove(0);
+			solution.add(p1);
+			
+			for(int j=0; j<piecesJouees.size(); j++) {
+				if(p1.caracteristiqueEnCommun(piecesJouees.get(j)) && 
+				p1.getPos().getX() == piecesJouees.get(j).getPos().getX()) {
+					solution.add(piecesJouees.get(j));
+				}
+				if(solution.size()==4) break;
+			}
+			
+			if(solution.size()==4) {
+				aGagne = true;
+				for(int j=0; j<solution.size()-1; j++) {
+					for(int k=j+1; k<solution.size(); k++) {
+						if(!solution.get(j).caracteristiqueEnCommun(solution.get(k))) {
+							aGagne = false;
+							break;
+						}
+					}
+					if(!aGagne) break;
+				}
+			}
+			
+			if(aGagne) return true;
+			
+			piecesJouees.add(p1);
+			solution.clear();
+		}
+		return aGagne;
+	}
+	
+	public boolean victoireColonne() {
+		boolean aGagne = false;
+		List<Piece> solution = new ArrayList<>();
+		
+		for(int i=0; i<piecesJouees.size(); i++) {
+			Piece p1 = piecesJouees.get(0);
+			piecesJouees.remove(0);
+			solution.add(p1);
+			
+			for(int j=0; j<piecesJouees.size(); j++) {
+				if(p1.caracteristiqueEnCommun(piecesJouees.get(j)) && 
+				p1.getPos().getY() == piecesJouees.get(j).getPos().getY()) {
+					solution.add(piecesJouees.get(j));
+				}
+				if(solution.size()==4) break;
+			}
+			
+			if(solution.size()==4) {
+				aGagne = true;
+				for(int j=0; j<solution.size()-1; j++) {
+					for(int k=j+1; k<solution.size(); k++) {
+						if(!solution.get(j).caracteristiqueEnCommun(solution.get(k))) {
+							aGagne = false;
+							break;
+						}
+					}
+					if(!aGagne) break;
+				}
+			}
+			
+			if(aGagne) return true;
+			
+			piecesJouees.add(p1);
+			solution.clear();
+		}
+		
+		return aGagne;
+	}	
+}	
