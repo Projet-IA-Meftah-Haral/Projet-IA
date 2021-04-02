@@ -40,18 +40,6 @@ public class Piece {
 	public void attribuerPosition (Position p) {
 		pos = p;
 	}
-	
-	/**
-	 * Vérifie si deux pièces ont une caractéristique en commun
-	 * @param p : Pièce comparée à la pièce courante 
-	 * @return true si les deux pièces ont une caractéristique commune, false sinon
-	 */
-	public boolean caracteristiqueEnCommun(Piece p) {
-		// Les pièces avec la position (0,0) désignent des cases vides du plateau, elles ne peuvent donc pas avoir 
-		// de caractéristique commune avec une autre pièce
-		if(pos.equals(new Position(0,0)) || p.getPos().equals(new Position(0,0))) return false;
-		return (couleur==p.couleur || forme==p.forme || hauteur==p.hauteur || pleineOuCreuse==p.pleineOuCreuse);
-	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -67,6 +55,7 @@ public class Piece {
 	
 	@Override
 	public String toString() {
+		// Les pièces avec la position (0,0) désignent des cases vides du plateau
 		if(pos.equals(new Position(0,0))) return "vide";
 		return "(" + couleur + "," + forme + "," + hauteur + "," + pleineOuCreuse + ")";
 	}
