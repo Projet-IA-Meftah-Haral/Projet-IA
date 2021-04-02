@@ -117,27 +117,92 @@ public class Plateau {
      * @return true si un joueur a remporté la partie, false sinon
      */
     public boolean victoireDiagonale() {
-    	boolean aGagne = true;
+    	int compteurCouleur=0, compteurForme=0, compteurHauteur=0, compteurPleineCreuse=0;
+    	boolean couleur=true, forme=true, hauteur=true, pleineCreuse=true;
     	
     	for(int i=0; i<plateau.length-1; i++) {
-    		for(int j=i+1; j<plateau.length; j++) {
-    			if(!plateau[i][i].caracteristiqueEnCommun(plateau[j][j])) {
-    				aGagne = false;
-    				break;
-    			}
-    		}
-    		if(!aGagne) break;
+    		if(couleur) {
+				if(plateau[i+1][i+1].getPos().equals(new Position(0,0)) || 
+				plateau[i][i].getCouleur() != plateau[i+1][i+1].getCouleur()) {
+					couleur = false;
+				}
+				else compteurCouleur++;
+			}
+			
+			if(forme) {
+				if(plateau[i+1][i+1].getPos().equals(new Position(0,0)) || 
+				plateau[i][i].getForme() != plateau[i+1][i+1].getForme()) {
+					forme = false;
+				}
+				else compteurForme++;
+			}
+			
+			if(hauteur) {
+				if(plateau[i+1][i+1].getPos().equals(new Position(0,0)) ||
+				plateau[i][i].getHauteur() != plateau[i+1][i+1].getHauteur()) {
+					hauteur = false;
+				}
+				else compteurHauteur++;
+			}
+			
+			if(pleineCreuse) {
+				if(plateau[i+1][i+1].getPos().equals(new Position(0,0)) ||
+				plateau[i][i].getPleineOuCreuse() != plateau[i+1][i+1].getPleineOuCreuse()) {
+					pleineCreuse = false;
+				}
+				else compteurPleineCreuse++;
+			}
     	}
     	
-    	if(!aGagne) {
-    		for(int i=plateau.length-1, j=0; j<plateau.length; i--, j++) {
-        		for(int k=i-1, l=j+1; l<plateau.length; k--, l++) {
-        			if(!plateau[i][j].caracteristiqueEnCommun(plateau[k][l])) return false;
+    	if(compteurCouleur==plateau.length-1 || compteurForme==plateau.length-1 || compteurHauteur==plateau.length-1 || 
+    	compteurPleineCreuse==plateau.length-1) {
+    	    return true;
+       	}
+    	
+       	else {
+       		compteurCouleur=0; compteurForme=0; compteurHauteur=0; compteurPleineCreuse=0;
+        	couleur=true; forme=true; hauteur=true; pleineCreuse=true;
+        	
+        	for(int i=plateau.length-1, j=0; j<plateau.length-1; i--, j++) {
+        		if(couleur) {
+        			if(plateau[i-1][j+1].getPos().equals(new Position(0,0)) || 
+        					plateau[i][j].getCouleur() != plateau[i-1][j+1].getCouleur()) {
+        				couleur = false;
+        			}
+        			else compteurCouleur++;
+        		}
+
+        		if(forme) {
+        			if(plateau[i-1][j+1].getPos().equals(new Position(0,0)) || 
+        					plateau[i][j].getForme() != plateau[i-1][j+1].getForme()) {
+        				forme = false;
+        			}
+        			else compteurForme++;
+        		}
+
+        		if(hauteur) {
+        			if(plateau[i-1][j+1].getPos().equals(new Position(0,0)) ||
+        					plateau[i][j].getHauteur() != plateau[i-1][j+1].getHauteur()) {
+        				hauteur = false;
+        			}
+        			else compteurHauteur++;
+        		}
+
+        		if(pleineCreuse) {
+        			if(plateau[i-1][j+1].getPos().equals(new Position(0,0)) ||
+        					plateau[i][j].getPleineOuCreuse() != plateau[i-1][j+1].getPleineOuCreuse()) {
+        				pleineCreuse = false;
+        			}
+        			else compteurPleineCreuse++;
         		}
         	}
-    	}
+       	}
     	
-    	return true;
+    	if(compteurCouleur==plateau.length-1 || compteurForme==plateau.length-1 || compteurHauteur==plateau.length-1 || 
+    	compteurPleineCreuse==plateau.length-1) {
+    		return true;
+    	}
+    	else return false;
     }
     
     
@@ -147,29 +212,52 @@ public class Plateau {
      * @return true si un joueur a remporté la partie, false sinon
      */
     public boolean victoireLigne() {
-   
+    	int compteurCouleur=0, compteurForme=0, compteurHauteur=0, compteurPleineCreuse=0;
+    	boolean couleur=true, forme=true, hauteur=true, pleineCreuse=true;
+    	
     	for(int i=0; i<plateau.length; i++) {
     		
-    		int compteur = 0;
-    		
     		for(int j=0; j<plateau.length-1; j++) {
-    			boolean ligneParcourue = true;
     			
-    			for(int k=j+1; k<plateau.length; k++) {
-    				if(!plateau[i][j].caracteristiqueEnCommun(plateau[i][k])) {
-    					ligneParcourue = false;
-    					break;
+    			if(couleur) {
+    				if(plateau[i][j+1].getPos().equals(new Position(0,0)) || 
+    				plateau[i][j].getCouleur() != plateau[i][j+1].getCouleur()) {
+    					couleur = false;
     				}
+    				else compteurCouleur++;
     			}
     			
-    			if(!ligneParcourue) break;
-    			else compteur++;
+    			if(forme) {
+    				if(plateau[i][j+1].getPos().equals(new Position(0,0)) || 
+    				plateau[i][j].getForme() != plateau[i][j+1].getForme()) {
+    					forme = false;
+    				}
+    				else compteurForme++;
+    			}
     			
-    			if(compteur == plateau.length-1) return true;
+    			if(hauteur) {
+    				if(plateau[i][j+1].getPos().equals(new Position(0,0)) ||
+    				plateau[i][j].getHauteur() != plateau[i][j+1].getHauteur()) {
+    					hauteur = false;
+    				}
+    				else compteurHauteur++;
+    			}
+    			
+    			if(pleineCreuse) {
+    				if(plateau[i][j+1].getPos().equals(new Position(0,0)) ||
+    				plateau[i][j].getPleineOuCreuse() != plateau[i][j+1].getPleineOuCreuse()) {
+    					pleineCreuse = false;
+    				}
+    				else compteurPleineCreuse++;
+    			}
     		}
     	}
     	
-    	return false;
+    	if(compteurCouleur==plateau.length-1 || compteurForme==plateau.length-1 || compteurHauteur==plateau.length-1 || 
+    	compteurPleineCreuse==plateau.length-1) {
+    		return true;
+    	}
+    	else return false;
     }
     
     /**
@@ -178,28 +266,51 @@ public class Plateau {
      * @return true si un joueur a remporté la partie, false sinon
      */
     public boolean victoireColonne() {
+    	int compteurCouleur=0, compteurForme=0, compteurHauteur=0, compteurPleineCreuse=0;
+    	boolean couleur=true, forme=true, hauteur=true, pleineCreuse=true;
     	
     	for(int j=0; j<plateau.length; j++) {
     		
-    		int compteur = 0;
-    		
     		for(int i=0; i<plateau.length-1; i++) {
-    			boolean ligneParcourue = true;
     			
-    			for(int k=i+1; k<plateau.length; k++) {
-    				if(!plateau[i][j].caracteristiqueEnCommun(plateau[k][j])) {
-    					ligneParcourue = false;
-    					break;
+    			if(couleur) {
+    				if(plateau[i+1][j].getPos().equals(new Position(0,0)) || 
+    				plateau[i][j].getCouleur() != plateau[i+1][j].getCouleur()) {
+    					couleur = false;
     				}
+    				else compteurCouleur++;
     			}
     			
-    			if(!ligneParcourue) break;
-    			else compteur++;
+    			if(forme) {
+    				if(plateau[i+1][j].getPos().equals(new Position(0,0)) || 
+    				plateau[i][j].getForme() != plateau[i+1][j].getForme()) {
+    					forme = false;
+    				}
+    				else compteurForme++;
+    			}
     			
-    			if(compteur == plateau.length-1) return true;
+    			if(hauteur) {
+    				if(plateau[i+1][j].getPos().equals(new Position(0,0)) ||
+    				plateau[i][j].getHauteur() != plateau[i+1][j].getHauteur()) {
+    					hauteur = false;
+    				}
+    				else compteurHauteur++;
+    			}
+    			
+    			if(pleineCreuse) {
+    				if(plateau[i+1][j].getPos().equals(new Position(0,0)) ||
+    				plateau[i][j].getPleineOuCreuse() != plateau[i+1][j].getPleineOuCreuse()) {
+    					pleineCreuse = false;
+    				}
+    				else compteurPleineCreuse++;
+    			}
     		}
     	}
     	
-    	return false;
+    	if(compteurCouleur==plateau.length-1 || compteurForme==plateau.length-1 || compteurHauteur==plateau.length-1 || 
+    	compteurPleineCreuse==plateau.length-1) {
+    		return true;
+    	}
+    	else return false;
     }
 }
