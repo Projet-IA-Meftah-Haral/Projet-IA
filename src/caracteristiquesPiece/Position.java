@@ -1,19 +1,19 @@
 package caracteristiquesPiece;
 
 public class Position {
-	private int x, y;
+	private int i, j;
 	
-	public Position(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public Position(int i, int j) {
+		this.i = i;
+		this.j = j;
 	}
 	
-	public int getX() {
-		return x;
+	public int getI() {
+		return i;
 	}
 	
-	public int getY() {
-		return y;
+	public int getJ() {
+		return j;
 	}
 
 	@Override
@@ -24,6 +24,6 @@ public class Position {
 			return true;
 		}
 
-		return ((this.x==p.x) && (this.y==p.y));
+		return ((this.i==p.i) && (this.j==p.j));
 	}
 }
