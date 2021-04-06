@@ -1,6 +1,8 @@
 package algorithmes;
 
+import caracteristiquesPiece.Position;
 import partie.Joueur;
+import partie.Piece;
 import partie.Plateau;
 
 /**
@@ -27,10 +29,22 @@ public class MiniMax {
     /**
      * Retourne les actions possibles selon l'état du plateau
      * @param etat état du plateau à un instant T
-     * @return retourne une action (liste de couple pièce/position)
+     * @return retourne une liste d'actions (liste de couple pièce/position)
      */
     public Action action(Plateau etat) {
-        return null;
+        Action actions = new Action();
+        for (int i = 0; i < etat.getPlateau().length; i++) {
+            for (int j = 0; j < etat.getPlateau().length; j++) {
+                // Si la case est vide on rempli la liste des actions selon les pièces dispo et la position du plateau 
+                Piece [][] plateau = etat.getPlateau();
+                if (plateau[i][j].toString().equals("vide")) {
+                    for (Piece pieceDispo : etat.getListPiecesDispo()) {
+                        actions.getAction().put(pieceDispo, new Position(i, j));
+                    }
+                }
+            }
+        }
+        return actions;
     }
 
     /**
@@ -39,8 +53,17 @@ public class MiniMax {
      * @param action action d'un joueur
      * @return retourne un plateau après l'action
      */
-    public Plateau resultat(Plateau etat, Action action) {
-        return null;
+    public Plateau resultat(Plateau etat, Piece piece, Position position) {
+        Plateau newEtat = etat;
+        Piece [][] newPlateau = etat.getPlateau();
+        if (newPlateau[position.getI()][position.getJ()].toString().equals("vide")) {
+            newPlateau[position.getI()][position.getJ()] = piece;
+            newEtat.setPlateau(newPlateau);
+        } else {
+            System.out.println("Impossible de changer la valeur car la case ["+position.getI()+"] ["+position.getJ()+"] est déjà rempli");
+        }
+
+        return newEtat;
     }
 
     /**

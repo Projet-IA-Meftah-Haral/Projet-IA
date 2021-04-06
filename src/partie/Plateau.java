@@ -49,6 +49,18 @@ public class Plateau {
     public Joueur getGagnant() {
     	return gagnant;
     }
+
+	public Piece[][] getPlateau() {
+		return plateau;
+	}
+
+	public void setPlateau(Piece[][] plateau) {
+		this.plateau = plateau;
+	}
+
+	public List<Piece> getListPiecesDispo() {
+		return listPiecesDispo;
+	}
     
     /**
      * Affiche le plateau de la partie en cours
