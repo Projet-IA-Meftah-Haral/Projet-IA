@@ -1,6 +1,7 @@
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import algorithmes.JeuRepresentation;
 import partie.Joueur;
 import partie.Plateau;
 
@@ -14,21 +15,29 @@ public class Main {
             System.out.print("Joueur 1, quel est votre nom ? ");
             Joueur joueur1 = new Joueur(sc.nextLine());
 
-            System.out.print("Joueur 2, quel est votre nom ? ");
+            System.out.print("Joueur 2, quel est votre nom ? "); 
             Joueur joueur2 = new Joueur(sc.nextLine());
+            
+            //JeuRepresentation.setHumain(new Joueur(sc.nextLine())); | Pour l'instant ne sert pas (car pas d'ia dans le projet)
+            //Donc on garde pour l'instant le jeu avec les 2 joueur humain
 
-            double tour_joueur = Math.random(); //Au 1er tour, le joueur qui commence est choisi aléatoirement
+            double premier_tour = Math.random(); //Au 1er tour, le joueur qui commence est choisi aléatoirement
             
             Plateau plateau = new Plateau();
-            
-            boolean finPartie = false;
 
-            while (!finPartie) {
+            if (premier_tour >= 0.5) { //Si le 1er coup est sup ou égal à 0.5, le 1er tour est donné à l'IA, sinon c'est l'humain qui joue
+                plateau.setTourHumain(false);;
+            }
+
+            while (!JeuRepresentation.test_terminal(plateau)) {
             	System.out.println();
                 plateau.affichagePlateau();
                 System.out.println();
 
-                if (tour_joueur < 0.5) {
+                if (plateau.getTourHumain()) {
+                    /**
+                     * Ici c'est le tour de l'humain
+                     */
                     joueur2.deposerPiece(joueur1.choixPiece(plateau, sc), plateau, sc);
                     
                     if(plateau.aGagne()) {
@@ -36,17 +45,18 @@ public class Main {
                     	plateau.affichagePlateau();
                     	System.out.println();
                     	System.out.println(plateau.getGagnant().getNom() + " a gagné !");
-                    	finPartie = true;
                     }
                     
                     if(plateau.plateauRempli()) {
                     	System.out.println();
                     	System.out.println("Le plateau est rempli, pas de vainqueur !");
-                    	finPartie = true;
                     }
 
-                    tour_joueur = 1;
+                    plateau.setTourHumain(false);
                 } else {
+                    /**
+                     * Ici c'est le tour de l'IA
+                     */
                     joueur1.deposerPiece(joueur2.choixPiece(plateau, sc), plateau, sc);
                     
                     if(plateau.aGagne()) {
@@ -54,16 +64,14 @@ public class Main {
                     	plateau.affichagePlateau();
                     	System.out.println();
                     	System.out.println(plateau.getGagnant().getNom() + " a gagné !");
-                    	finPartie = true;
                     }
                     
                     if(plateau.plateauRempli()) {
                     	System.out.println();
                     	System.out.println("Le plateau est rempli, pas de vainqueur !");
-                    	finPartie = true;
                     }
 
-                    tour_joueur = 0;
+                    plateau.setTourHumain(true);
                 }
             }
         } catch (NoSuchElementException e) {

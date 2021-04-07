@@ -12,6 +12,7 @@ public class Plateau {
     private List<Piece> listPiecesDispo = new ArrayList<Piece>();
     private Piece plateau[][] = new Piece[4][4]; 
     private Joueur gagnant;
+	private boolean tourHumain;
 
     /**
      * 
@@ -44,24 +45,57 @@ public class Plateau {
     	}
         
         gagnant = null;
+		tourHumain = true;
     }
     
+	/**
+	 * Accesseur du gagnant de la partie
+	 * @return retourne le joueur gagnant
+	 */
     public Joueur getGagnant() {
     	return gagnant;
     }
 
+	/**
+	 * Acceusseur du plateau
+	 * @return retourne le plateau
+	 */
 	public Piece[][] getPlateau() {
 		return plateau;
 	}
 
+	/**
+	 * Acceusseur de la liste des pièces dispo
+	 * @return retourne la liste des pièces dispo
+	 */
+	public List<Piece> getListPiecesDispo() {
+		return listPiecesDispo;
+	}
+
+	/**
+	 * Acceusseur du tour
+	 * @return retourne vrai si c'est le tour de l'humain, faux sinon
+	 */
+	public boolean getTourHumain() {
+		return tourHumain;
+	}
+
+	/**
+	 * Modification du plateau
+	 * @param plateau un plateau
+	 */
 	public void setPlateau(Piece[][] plateau) {
 		this.plateau = plateau;
 	}
 
-	public List<Piece> getListPiecesDispo() {
-		return listPiecesDispo;
+	/**
+	 * Modificateur du tour humain
+	 * @param tourHumain un tour (vrai pour tour de l'humain / faux pour l'IA)
+	 */
+	public void setTourHumain(boolean tourHumain) {
+		this.tourHumain = tourHumain;
 	}
-    
+	
     /**
      * Affiche le plateau de la partie en cours
      */
