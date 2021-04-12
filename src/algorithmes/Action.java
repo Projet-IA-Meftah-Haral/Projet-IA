@@ -1,7 +1,5 @@
 package algorithmes;
 
-import java.util.HashMap;
-
 import caracteristiquesPiece.Position;
 import partie.Piece;
 
@@ -9,14 +7,20 @@ import partie.Piece;
 * Action d'un joueur (liste de couple pièce/position)
 */
 public class Action {
-    private HashMap<Piece, Position> action;
-
+    private Piece piece;
+    private Position position;
     
-    public Action() {
-        action = new HashMap<Piece, Position>();
+    
+    public Action(Piece p, Position pos) {
+        piece = p;
+        position = pos;
     }
-
-    public HashMap<Piece, Position> getAction() {
-        return action;
+    
+    public Piece getPiece() {
+        return piece;
+    }
+    
+    public Position getPosition() {
+        return position;
     }
 }

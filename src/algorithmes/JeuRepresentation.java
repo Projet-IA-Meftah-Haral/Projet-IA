@@ -1,5 +1,8 @@
 package algorithmes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import caracteristiquesPiece.Position;
 import partie.Joueur;
 import partie.Piece;
@@ -64,15 +67,15 @@ public class JeuRepresentation {
      * @param etat état du plateau à un instant T
      * @return retourne une liste d'actions (liste de couple pièce/position)
      */
-    public static Action actions(Plateau etat) {
-        Action actions = new Action();
+    public static List<Action> actions(Plateau etat) {
+        List<Action> actions = new ArrayList<>();
         for (int i = 0; i < etat.getPlateau().length; i++) {
             for (int j = 0; j < etat.getPlateau().length; j++) {
                 // Si la case est vide on rempli la liste des actions selon les pièces dispo et la position du plateau 
                 Piece [][] plateau = etat.getPlateau();
                 if (plateau[i][j].toString().equals("vide")) {
                     for (Piece pieceDispo : etat.getListPiecesDispo()) {
-                        actions.getAction().put(pieceDispo, new Position(i, j));
+                        actions.add(new Action(pieceDispo, new Position(i, j)));
                     }
                 }
             }
@@ -87,14 +90,14 @@ public class JeuRepresentation {
      * @param position position d'une pièce à déposer
      * @return retourne un plateau après l'action
      */
-    public static Plateau resultat(Plateau etat, Piece piece, Position position) {
+    public static Plateau resultat(Plateau etat, Action action) {
         Plateau newEtat = etat;
         Piece [][] newPlateau = etat.getPlateau();
-        if (newPlateau[position.getI()][position.getJ()].toString().equals("vide") && newEtat.getListPiecesDispo().contains(piece)) {
-            newPlateau[position.getI()][position.getJ()] = piece;
+        if (newPlateau[action.getPosition().getI()][action.getPosition().getJ()].toString().equals("vide") && newEtat.getListPiecesDispo().contains(action.getPiece())) {
+            newPlateau[action.getPosition().getI()][action.getPosition().getJ()] = action.getPiece();
             newEtat.setPlateau(newPlateau);
         } else {
-            System.out.println("Impossible d'effectuer cette action car la case ["+position.getI()+"] ["+position.getJ()+"] est déjà rempli");
+            System.out.println("Impossible d'effectuer cette action car la case ["+action.getPosition().getI()+"] ["+action.getPosition().getJ()+"] est déjà rempli");
             System.out.println("Ou alors la pièce n'est plus disponible");
             return etat;
         }
