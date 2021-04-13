@@ -5,18 +5,21 @@ import java.util.List;
 import partie.Joueur;
 import partie.Plateau;
 
-public class AlphaBeta 
+/**
+ * Algorithme Minimax avec Alpha-Beta intégré
+ */
+public class MiniMax 
 {
     private Joueur max, min;
     private int alpha, beta, profondeur;
     private Action meilleureAction;
 
-    public AlphaBeta(Joueur max, Joueur min, int a, int b, int p) 
+    public MiniMax(Joueur max, Joueur min, int p) 
     {
         this.max = max;
         this.min = min;
-        alpha = a;
-        beta = b;
+        alpha = 0;
+        beta = 0;
         profondeur = p;
         meilleureAction = null;
     }

@@ -10,7 +10,6 @@ public class Action {
     private Piece piece;
     private Position position;
     
-    
     public Action(Piece p, Position pos) {
         piece = p;
         position = pos;
