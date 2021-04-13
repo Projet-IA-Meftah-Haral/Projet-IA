@@ -86,8 +86,7 @@ public class JeuRepresentation {
     /**
      * Modèle de transition, qui défini le résultat d'une action selon l'état du plateau
      * @param etat état du plateau à un instant T
-     * @param piece une pièce
-     * @param position position d'une pièce à déposer
+     * @param action une action (consituté d'une pièce et de sa position où l'on souhaite la déposer)
      * @return retourne un plateau après l'action
      */
     public static Plateau resultat(Plateau etat, Action action) {
