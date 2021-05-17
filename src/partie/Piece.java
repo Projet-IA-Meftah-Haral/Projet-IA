@@ -7,14 +7,14 @@ public class Piece {
 	private Forme forme;
 	private Hauteur hauteur;
 	private PleineOuCreuse pleineOuCreuse;
-	private Position pos;
+	private boolean caseVide;
 	
 	public Piece(Couleur c, Forme f, Hauteur h, PleineOuCreuse p) {
 		couleur = c;
 		forme = f;
 		hauteur = h;
 		pleineOuCreuse = p;
-		pos = new Position(0,0);
+		caseVide = true;
 	}
 
 	public Couleur getCouleur() {
@@ -33,12 +33,12 @@ public class Piece {
 		return pleineOuCreuse;
 	}
 	
-	public Position getPos() {
-		return pos;
+	public boolean getCaseVide() {
+		return caseVide;
 	}
 	
-	public void attribuerPosition (Position p) {
-		pos = p;
+	public void setCaseVide() {
+		caseVide = false;
 	}
 
 	@Override
@@ -55,8 +55,8 @@ public class Piece {
 	
 	@Override
 	public String toString() {
-		// Les pièces avec la position (0,0) désignent des cases vides du plateau
-		if(pos.equals(new Position(0,0))) return "vide";
+		// Les pièces avec caseVide true sont les pièces occupant les cases censées être vides du plateau
+		if(caseVide) return "vide";
 		return "(" + couleur + "," + forme + "," + hauteur + "," + pleineOuCreuse + ")";
 	}
 }

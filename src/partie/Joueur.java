@@ -6,31 +6,21 @@ import java.util.Scanner;
 import caracteristiquesPiece.*;
 
 public class Joueur {
-	
-	private String nom;
-	
-	public Joueur(String n) {
-		nom = n;
-	}
-
-	public String getNom() {
-		return nom;
-	}
-
 	/**
 	 * Demande au joueur quelle piece il veut fournir à l'adversaire
 	 * @param sc le scanner d'E/S
 	 * @return la piece qu'il a choisit pour son adversaire
 	 */
-	public Piece choixPiece(Plateau plateau, Scanner sc) {
+	public static Piece choixPiece(Partie partie, String nomJoueur, Scanner sc) {
 		Couleur couleur = null;
 		Forme forme = null;
 		Hauteur hauteur = null;
 		PleineOuCreuse pleineOuCreuse = null;
 		Piece piece = null;
+
 		boolean pieceDispo = false;
 		
-		System.out.println(nom.toUpperCase() + ", veuillez entrer les caracteristiques de la piece s'il-vous-plait.");
+		System.out.println(nomJoueur.toUpperCase() + ", veuillez entrer les caracteristiques de la piece s'il-vous-plait.");
 		System.out.println();
 		
 		while(!pieceDispo) {
@@ -113,14 +103,17 @@ public class Joueur {
 			}
 			
 			piece = new Piece(couleur, forme, hauteur, pleineOuCreuse);
-			if(plateau.supprimerPiece(piece)) pieceDispo = true;
-			else {
+			if(!partie.supprimerPiece(piece)) {
 				System.out.println();
-				System.out.println("CETTE PIÈCE N'EST PLUS DISPONIBLE, VEUILLEZ EN CHOISIR UNE AUTRE S'IL-VOUS-PLAÎT.");
+				System.out.println("CETTE PIÈCE N'EST PLUS DISPONIBLE.");
 				System.out.println();
 			}
+			else {
+				pieceDispo = true;
+				partie.supprimerPiece(piece);
+			}	
 		}
-		
+
 		return piece;
 	}
 	
@@ -129,9 +122,9 @@ public class Joueur {
 	 * @param piece que l'adversaire lui a donnée
 	 * @param sc le scanner d'E/S
 	 */
-	public void deposerPiece(Piece piece, Plateau plateau, Scanner sc) {
+	public static void deposerPiece(Piece piece, Partie partie, String nomJoueur, Scanner sc) {
 		System.out.println("");
-		System.out.println(nom.toUpperCase() + ", à quelle position voulez-vous placer cette piece (plateau 4x4) ?");
+		System.out.println(nomJoueur.toUpperCase() + ", à quelle position voulez-vous placer cette piece (plateau 4x4) ?");
 		
 		boolean caseDispo = false;
 		
@@ -174,9 +167,9 @@ public class Joueur {
 				}
 			}
 
-			piece.attribuerPosition(new Position(i,j));
-			if(plateau.remplirPlateau(piece, this)) caseDispo = true;
-			else System.out.println("CETTE CASE EST DÉJÀ PRISE, VEUILLEZ EN CHOISIR UNE AUTRE S'IL-VOUS-PLAÎT.");
+			piece.setCaseVide();
+			if(partie.remplirPlateau(piece, i, j)) caseDispo = true;
+			else System.out.println("CETTE CASE EST DÉJÀ PRISE.");
 		}
 	}
 }	
