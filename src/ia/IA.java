@@ -8,10 +8,8 @@ public class IA {
     private Partie partie;
     private Action meilleureAction;
     private Piece piece;
-    private int compteur;
 
     public IA(int prof, Partie p) {
-        compteur = 0;
         profondeur = prof;
         partie = p;
         meilleureAction = null;
@@ -20,6 +18,8 @@ public class IA {
 
     public Piece minimaxAlphaBetaChoixPiece() {
         valeurMin(partie, profondeur, -4, 3);
+        meilleureAction.getPiece().setCaseVide();
+        System.out.println("L'ordinateur a choisi la pièce " + meilleureAction.getPiece() + ".");
         return meilleureAction.getPiece();
     }
 
@@ -30,17 +30,15 @@ public class IA {
 
     public int valeurMax(Partie p, int prof, int alpha, int beta) {
 
-        if (partie.testTerminal() || profondeur == 0 || compteur==100)
+        if (partie.testTerminal() || prof == 0)
             return partie.utilite(piece);
 
         for (Action a : partie.actionsPossibles()) {
-            compteur++;
-            System.out.println(compteur);
 
             if (partie.getTourJ1()) {
                 piece = a.getPiece();
             }
-
+CD
             int utilite = valeurMin(p.resultat(a), prof - 1, alpha, beta);
 
             if (utilite > alpha) {
@@ -59,12 +57,10 @@ public class IA {
 
     public int valeurMin(Partie p, int prof, int alpha, int beta) {
 
-        if (partie.testTerminal() || profondeur == 0 || compteur==100) 
+        if (partie.testTerminal() || prof == 0) 
             return partie.utilite(piece);
 
         for (Action a : partie.actionsPossibles()) {
-            compteur++;
-            System.out.println(compteur);
 
             if (partie.getTourJ1()) {
                 piece = a.getPiece();
@@ -92,5 +88,9 @@ public class IA {
         int i = pos.getI();
         int j = pos.getJ();
         nouveauPlateau[i][j] = piece;
+        partie.setPlateau(nouveauPlateau);
+        partie.setPiecesDisponibles(p);
+        System.out.println();
+        System.out.println("L'ordinateur a déposé la pièce à la position ("+(i+1)+","+(j+1)+").");
     }
 }

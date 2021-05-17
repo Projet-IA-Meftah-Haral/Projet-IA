@@ -94,6 +94,7 @@ public class Main {
         
         else {
             try {
+                System.out.println();
                 System.out.print("Quel est votre nom ? ");
                 String joueur = sc.nextLine();
                 
@@ -126,17 +127,9 @@ public class Main {
                 }
 
                 IA ia;
-                if(choixDifficulte == 1) {
-                    ia = new IA(1, partie);
-                }
-                
-                if(choixDifficulte == 2) {
-                    ia = new IA(3, partie);
-                }
-                
-                else {
-                    ia = new IA(5, partie);
-                }
+                if(choixDifficulte == 1) ia = new IA(1, partie);
+                if(choixDifficulte == 2) ia = new IA(3, partie);
+                else ia = new IA(5, partie);
                 
                 while(!partie.testTerminal()) {
                     System.out.println();
@@ -161,17 +154,15 @@ public class Main {
                         System.out.println();
                         partie.affichagePlateau();
                         System.out.println();
-                        System.out.println(partie.getJoueur2() + " a gagné !");
+                        System.out.println("L'ordinateur a gagné !");
                     }
                     
-                    else if(partie.plateauRempli()) {
+                    else if(partie.plateauRempli() && !partie.aGagne()) {
                         System.out.println();
                         partie.affichagePlateau();
                         System.out.println();
                         System.out.println("Pas de vainqueur ! Le plateau est rempli.");
                     }
-                    
-                    System.out.println(partie.getPiecesDisponibles());
                     
                     partie.setTourJ1();
                 }
@@ -183,6 +174,7 @@ public class Main {
                 System.err.println("Le scanner est déjà fermé");
             }   
         }
+
         sc.close();
     }
 }

@@ -84,6 +84,10 @@ public class Partie {
 	public void setPlateau(Piece[][] plateau) {
 		this.plateau = plateau;
 	}
+
+	public void setPiecesDisponibles(Piece p) {
+		piecesDisponibles.remove(p);
+	}
 	
 	/**
 	* Modificateur du tour humain
