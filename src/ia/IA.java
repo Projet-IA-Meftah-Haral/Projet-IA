@@ -9,88 +9,106 @@ public class IA {
     private Action meilleureAction;
     private Piece piece;
 
-    public IA(int prof, Partie p) {
+    public IA(Partie p, int prof) {
         profondeur = prof;
         partie = p;
         meilleureAction = null;
         piece = null;
     }
 
-    public Piece minimaxAlphaBetaChoixPiece() {
-        valeurMin(partie, profondeur, -4, 3);
-        meilleureAction.getPiece().setCaseVide();
-        System.out.println("L'ordinateur a choisi la pièce " + meilleureAction.getPiece() + ".");
-        return meilleureAction.getPiece();
-    }
+    /**
+     * Permet à l'IA de choisir la pièce que va poser l'humain en utilisant l'algorithme Minimax
+     * et l'élagage Alpha-Beta
+     * @return La pièce choisie par l'IA
+     */
+    public Piece choixPiece() {
+        // Algorithme Minimax avec l'élagage Alpha-Beta
+        valeurMin(profondeur, -4, 3);
 
-    public Position minimaxAlphaBetaDeposerPiece() {
-        valeurMax(partie, profondeur, -4, 3);
-        return meilleureAction.getPosition();
-    }
+        Piece p = meilleureAction.getPiece();
+        p.setCaseVide(false);
+        // p.setCaseVide(false);
+        partie.setPiecesDisponibles(p);
+        System.out.println("L'ordinateur a choisi la pièce " + p + ".");
+        // partie.affichagePlateau();
 
-    public int valeurMax(Partie p, int prof, int alpha, int beta) {
-
-        if (partie.testTerminal() || prof == 0)
-            return partie.utilite(piece);
-
-        for (Action a : partie.actionsPossibles()) {
-
-            if (partie.getTourJ1()) {
-                piece = a.getPiece();
-            }
-CD
-            int utilite = valeurMin(p.resultat(a), prof - 1, alpha, beta);
-
-            if (utilite > alpha) {
-                alpha = utilite;
-                if (prof == profondeur)
-                    meilleureAction = a;
-            }
-
-            if (alpha >= beta)
-                return alpha;
-        }
-
-        return alpha;
-
-    }
-
-    public int valeurMin(Partie p, int prof, int alpha, int beta) {
-
-        if (partie.testTerminal() || prof == 0) 
-            return partie.utilite(piece);
-
-        for (Action a : partie.actionsPossibles()) {
-
-            if (partie.getTourJ1()) {
-                piece = a.getPiece();
-            }
-
-            int utilite = valeurMax(p.resultat(a), prof - 1, alpha, beta);
-
-            if (utilite <= beta) {
-                beta = utilite;
-                if (prof == profondeur)
-                    meilleureAction = a;
-            }
-
-            if (beta <= alpha)
-                return beta;
-        }
-
-        return beta;
+        return p;
     }
 
     public void deposerPiece(Piece p) {
-        piece = p;
-        Piece[][] nouveauPlateau = partie.getPlateau();
-        Position pos = minimaxAlphaBetaDeposerPiece();
+        valeurMax(profondeur, -4, 3);
+
+        // piece = p;
+        // piece.setCaseVide(false);
+        
+        Position pos = meilleureAction.getPosition();
         int i = pos.getI();
         int j = pos.getJ();
-        nouveauPlateau[i][j] = piece;
-        partie.setPlateau(nouveauPlateau);
-        partie.setPiecesDisponibles(p);
+        partie.remplirPlateau(p, i+1, j+1);
+
         System.out.println();
         System.out.println("L'ordinateur a déposé la pièce à la position ("+(i+1)+","+(j+1)+").");
+    }
+
+    // public Action minimaxAlphaBeta() {
+    //     valeurMax(profondeur, -4, 3);
+    //     meilleureAction.getPiece().setCaseVide(false);
+    //     return meilleureAction;
+    // }
+
+    public int valeurMax(int prof, int alpha, int beta) {
+
+        if (partie.testTerminal() || prof == 0) return partie.utilite(piece);
+
+        for (Action a : partie.actionsPossibles()) {
+            // a.getPiece().setCaseVide(false);
+            // System.out.println(a.getPiece() + " " + a.getI() + a.getJ()); 
+
+            if (partie.getTourJ1()) {
+                piece = a.getPiece();
+                // piece.setCaseVide(false);
+            }    
+
+            partie = partie.successeur(a);
+            int utilite = valeurMax(prof - 1, alpha, beta);
+            partie.defaireAction(a);
+
+            if (utilite > alpha) {
+                alpha = utilite;
+                if (prof == profondeur) meilleureAction = a;
+            }
+
+            if (alpha >= beta) return alpha;
+        }
+
+        return alpha;
+    }
+
+    public int valeurMin(int prof, int alpha, int beta) {
+
+        if (partie.testTerminal() || prof == 0) return partie.utilite(piece);
+
+        for (Action a : partie.actionsPossibles()) {
+            // a.getPiece().setCaseVide(false);
+            // System.out.println(a.getPiece() + " " + a.getI() + a.getJ()); 
+
+            if (partie.getTourJ1()) {
+                piece = a.getPiece();
+                // piece.setCaseVide(false);
+            }    
+
+            partie = partie.successeur(a);
+            int utilite = valeurMax(prof - 1, alpha, beta);
+            partie.defaireAction(a);
+
+            if (utilite < beta) {
+                beta = utilite;
+                if (prof == profondeur) meilleureAction = a;
+            }
+
+            if (beta <= alpha) return beta;
+        }
+
+        return beta;
     }
 }

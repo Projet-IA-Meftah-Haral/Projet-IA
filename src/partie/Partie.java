@@ -24,6 +24,7 @@ public class Partie {
 		for(int i=0; i<plateau.length; i++) {
 			for(int j=0; j<plateau.length; j++) {
 				plateau[i][j] = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.CREUSE);
+				plateau[i][j].setCaseVide(true);
 			}
 		}
 		
@@ -385,38 +386,49 @@ public class Partie {
 	}
 	
 	public List<Action> actionsPossibles() {
+	
 		List<Action> actions = new ArrayList<>();
+
 		for(int i=0; i<plateau.length; i++) {
 			for(int j=0; j<plateau.length; j++) {
 				// Si la case est vide on rempli la liste des actions selon les pièces dispo et la position du plateau 
-				Piece[][] nouvelEtat = plateau;
-				if(nouvelEtat[i][j].getCaseVide()) {
+				Piece[][] nouveauPlateau = plateau;
+				if(nouveauPlateau[i][j].getCaseVide()) {
 					for(Piece p : piecesDisponibles) {
+						// p.setCaseVide(false);
 						actions.add(new Action(p, new Position(i, j)));
 					}
 				}
 			}
 		}
+		
 		return actions;
 	}
 
-	public Partie resultat(Action action) {
+	public Partie successeur(Action action) {
 		Partie nouvelEtat = this;
         Piece[][] nouveauPlateau = plateau;
 
-        if(nouveauPlateau[action.getI()][action.getJ()].getCaseVide() && 
-			nouvelEtat.getPiecesDisponibles().contains(action.getPiece())) {
-				nouveauPlateau[action.getI()][action.getJ()] = action.getPiece();
-				nouvelEtat.setPlateau(nouveauPlateau);
-				nouvelEtat.setTourJ1();
-        } 
-
-		else {
-            System.out.println("Impossible d'effectuer cette action car la pièce n'est plus disponible ou bien la case ["
-				+action.getI()+"]["+action.getJ()+"] est déjà prise ");
-        }
+		// action.getPiece().setCaseVide();
+		nouveauPlateau[action.getI()][action.getJ()] = action.getPiece();
+		nouvelEtat.setPlateau(nouveauPlateau);
+		nouvelEtat.setTourJ1();
+		nouvelEtat.setPiecesDisponibles(action.getPiece());
 
         return nouvelEtat;
+	}
+
+	public Partie defaireAction(Action action) {
+		Partie nouvelEtat = this;
+		Piece[][] nouveauPlateau = plateau;
+
+		nouveauPlateau[action.getI()][action.getJ()].setCaseVide(true);
+		nouvelEtat.setPlateau(plateau);
+		nouvelEtat.setTourJ1();
+
+		nouvelEtat.getPiecesDisponibles().add(action.getPiece());
+
+		return nouvelEtat;
 	}
 	
 	public int utilite(Piece piece) {
@@ -440,11 +452,13 @@ public class Partie {
 		List<Hauteur> hauteurs = new ArrayList<>();
 		List<PleineOuCreuse> pleinesCreuses = new ArrayList<>();
 		
-		for(int i=0; i<plateau.length-1; i++) {
-			if(!plateau[i][i].getCaseVide()) couleurs.add(plateau[i][i].getCouleur());
-			if(!plateau[i][i].getCaseVide()) formes.add(plateau[i][i].getForme());
-			if(!plateau[i][i].getCaseVide()) hauteurs.add(plateau[i][i].getHauteur());
-			if(!plateau[i][i].getCaseVide()) pleinesCreuses.add(plateau[i][i].getPleineOuCreuse());
+		for(int i=0; i<plateau.length; i++) {
+			if(!plateau[i][i].getCaseVide()) {
+				couleurs.add(plateau[i][i].getCouleur());
+				formes.add(plateau[i][i].getForme());
+				hauteurs.add(plateau[i][i].getHauteur());
+				pleinesCreuses.add(plateau[i][i].getPleineOuCreuse());
+			}	
 		}	
 		
 		boolean memeCouleur = false;
@@ -512,11 +526,13 @@ public class Partie {
 		hauteurs.clear();
 		pleinesCreuses.clear();
 		
-		for(int i=plateau.length-1, j=0; j<plateau.length-1; i--, j++) {
-			if(!plateau[j][i].getCaseVide()) couleurs.add(plateau[j][i].getCouleur());
-			if(!plateau[j][i].getCaseVide()) formes.add(plateau[j][i].getForme());
-			if(!plateau[j][i].getCaseVide()) hauteurs.add(plateau[j][i].getHauteur());
-			if(!plateau[j][i].getCaseVide()) pleinesCreuses.add(plateau[j][i].getPleineOuCreuse());
+		for(int i=plateau.length-1, j=0; j<plateau.length; i--, j++) {
+			if(!plateau[i][j].getCaseVide()) {
+				couleurs.add(plateau[i][j].getCouleur());
+				formes.add(plateau[i][j].getForme());
+				hauteurs.add(plateau[i][j].getHauteur());
+				pleinesCreuses.add(plateau[i][j].getPleineOuCreuse());
+			}	
 		}	
 		
 		boolean mCouleur = false;
@@ -532,7 +548,7 @@ public class Partie {
 				if(!mCouleur) break;
 			}
 		}
-		if(memeCouleur && piece.getCouleur() == couleurs.get(0)) return true;
+		if(mCouleur && piece.getCouleur() == couleurs.get(0)) return true;
 		
 		boolean mForme = false;
 		if(formes.size() == plateau.length-1) {
@@ -547,7 +563,7 @@ public class Partie {
 				if(!mForme) break;
 			}
 		}
-		if(memeForme && piece.getForme() == formes.get(0)) return true;
+		if(mForme && piece.getForme() == formes.get(0)) return true;
 		
 		boolean mHauteur = false;
 		if(hauteurs.size() == plateau.length-1) {
@@ -562,7 +578,7 @@ public class Partie {
 				if(!mHauteur) break;
 			}
 		}
-		if(memeHauteur && piece.getHauteur() == hauteurs.get(0)) return true;
+		if(mHauteur && piece.getHauteur() == hauteurs.get(0)) return true;
 		
 		boolean mPleineCreuse = false;
 		if(pleinesCreuses.size() == plateau.length-1) {
@@ -577,7 +593,7 @@ public class Partie {
 				if(!mPleineCreuse) break;
 			}
 		}
-		if(memePleineCreuse && piece.getPleineOuCreuse() == pleinesCreuses.get(0)) return true;
+		if(mPleineCreuse && piece.getPleineOuCreuse() == pleinesCreuses.get(0)) return true;
 		
 		return false;
 	}
@@ -590,10 +606,12 @@ public class Partie {
 		
 		for(int i=0; i<plateau.length; i++) {
 			for(int j=0; j<plateau.length; j++) {
-				if(!plateau[j][i].getCaseVide()) couleurs.add(plateau[j][i].getCouleur());
-				if(!plateau[j][i].getCaseVide()) formes.add(plateau[j][i].getForme());
-				if(!plateau[j][i].getCaseVide()) hauteurs.add(plateau[j][i].getHauteur());
-				if(!plateau[j][i].getCaseVide()) pleinesCreuses.add(plateau[j][i].getPleineOuCreuse());
+				if(!plateau[i][j].getCaseVide()) {
+					couleurs.add(plateau[i][j].getCouleur());
+					formes.add(plateau[i][j].getForme());
+					hauteurs.add(plateau[i][j].getHauteur());
+					pleinesCreuses.add(plateau[i][j].getPleineOuCreuse());
+				}	
 			}
 			
 			boolean memeCouleur = false;
@@ -673,10 +691,12 @@ public class Partie {
 		
 		for(int i=0; i<plateau.length; i++) {
 			for(int j=0; j<plateau.length; j++) {
-				if(!plateau[j][i].getCaseVide()) couleurs.add(plateau[j][i].getCouleur());
-				if(!plateau[j][i].getCaseVide()) formes.add(plateau[j][i].getForme());
-				if(!plateau[j][i].getCaseVide()) hauteurs.add(plateau[j][i].getHauteur());
-				if(!plateau[j][i].getCaseVide()) pleinesCreuses.add(plateau[j][i].getPleineOuCreuse());
+				if(!plateau[j][i].getCaseVide()) {
+					couleurs.add(plateau[j][i].getCouleur());
+					formes.add(plateau[j][i].getForme());
+					hauteurs.add(plateau[j][i].getHauteur());
+					pleinesCreuses.add(plateau[j][i].getPleineOuCreuse());
+				}	
 			}
 			
 			boolean memeCouleur = false;

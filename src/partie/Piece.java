@@ -14,7 +14,7 @@ public class Piece {
 		forme = f;
 		hauteur = h;
 		pleineOuCreuse = p;
-		caseVide = true;
+		caseVide = false;
 	}
 
 	public Couleur getCouleur() {
@@ -37,8 +37,8 @@ public class Piece {
 		return caseVide;
 	}
 	
-	public void setCaseVide() {
-		caseVide = false;
+	public void setCaseVide(boolean b) {
+		caseVide = b;
 	}
 
 	@Override

@@ -2,12 +2,97 @@ import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import ia.Action;
 import ia.IA;
+import ia.Position;
 import partie.Joueur;
 import partie.Partie;
+import partie.Piece;
+import caracteristiquesPiece.*;
 
-public class Main {
+public class Principale {
     public static void main(String[] args) throws Exception { 
+
+        // Partie etat = new Partie("humain", "ia", true);
+        // Partie nouvelEtat = etat;
+
+        // Piece[][] nouveauPlateau = etat.getPlateau();
+        // nouveauPlateau[0][0] = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.CREUSE);
+        // nouveauPlateau[0][0].setCaseVide();
+        // nouvelEtat.setPlateau(nouveauPlateau);
+
+        // Partie newEtat = nouvelEtat;
+        
+        // newEtat.affichagePlateau();
+
+        // Action action = new Action(new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.CREUSE), new Position(0,0));
+        // action.getPiece().setCaseVide();
+        // System.out.println(action.getPiece());
+
+        // Partie etat = new Partie("humain", "ia", true);
+        // for(Action a : etat.actionsPossibles()) System.out.println(a.getPiece() + " " + a.getI() + a.getJ());  
+        
+        // //TESTER SUCCESSEUR() ET DEFAIREACTION()
+        // Partie etat = new Partie("humain", "ia", true);
+        // etat.affichagePlateau();
+        // System.out.println(etat.getPiecesDisponibles().size());
+        // System.out.println(etat.getTourJ1());
+        // Piece p = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.CREUSE);
+        // p.setCaseVide(false);
+        // Partie nouvelEtat = etat.successeur(new Action(p, new Position(0, 0)));
+        // nouvelEtat.affichagePlateau();
+        // System.out.println(nouvelEtat.getPiecesDisponibles().size());
+        // System.out.println(nouvelEtat.getTourJ1());
+        // nouvelEtat.defaireAction(new Action(p, new Position(0, 0)));
+        // nouvelEtat.affichagePlateau();
+        // System.out.println(nouvelEtat.getPiecesDisponibles().size());
+        // System.out.println(nouvelEtat.getTourJ1());
+
+        // //TESTER TROISPIECESMEMEDIAG()
+        // Partie etat = new Partie("humain", "ia", true);
+        // Piece p1 = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.CREUSE);
+        // p1.setCaseVide(false);
+        // Piece p2 = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.PLEINE);
+        // p2.setCaseVide(false);
+        // Piece p3 = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.HAUTE, PleineOuCreuse.CREUSE);
+        // p3.setCaseVide(false);
+        // Piece[][] nouveauPlateau = etat.getPlateau();
+        // nouveauPlateau[3][0] = p1;
+        // nouveauPlateau[1][2] = p2; 
+        // nouveauPlateau[0][3] = p3;
+        // etat.setPlateau(nouveauPlateau);
+        // System.out.println(etat.troisPiecesMemeDiag(new Piece(Couleur.NOIRE, Forme.RONDE, Hauteur.BASSE, PleineOuCreuse.CREUSE)));
+
+        // //TESTER TROISPIECESMEMELIGNE()
+        // Partie etat = new Partie("humain", "ia", true);
+        // Piece p1 = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.CREUSE);
+        // p1.setCaseVide(false);
+        // Piece p2 = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.PLEINE);
+        // p2.setCaseVide(false);
+        // Piece p3 = new Piece(Couleur.NOIRE, Forme.CARREE, Hauteur.HAUTE, PleineOuCreuse.CREUSE);
+        // p3.setCaseVide(false);
+        // Piece[][] nouveauPlateau = etat.getPlateau();
+        // nouveauPlateau[0][0] = p1;
+        // nouveauPlateau[0][2] = p2; 
+        // nouveauPlateau[0][3] = p3;
+        // etat.setPlateau(nouveauPlateau);
+        // System.out.println(etat.troisPiecesMemeLigne(new Piece(Couleur.NOIRE, Forme.RONDE, Hauteur.BASSE, PleineOuCreuse.CREUSE)));
+
+        // //TESTER TROISPIECESMEMECOLONNE()
+        // Partie etat = new Partie("humain", "ia", true);
+        // Piece p1 = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.CREUSE);
+        // p1.setCaseVide(false);
+        // Piece p2 = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.PLEINE);
+        // p2.setCaseVide(false);
+        // Piece p3 = new Piece(Couleur.NOIRE, Forme.CARREE, Hauteur.HAUTE, PleineOuCreuse.CREUSE);
+        // p3.setCaseVide(false);
+        // Piece[][] nouveauPlateau = etat.getPlateau();
+        // nouveauPlateau[0][2] = p1;
+        // nouveauPlateau[1][2] = p2; 
+        // nouveauPlateau[2][2] = p3;
+        // etat.setPlateau(nouveauPlateau);
+        // System.out.println(etat.troisPiecesMemeColonne(new Piece(Couleur.NOIRE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.CREUSE)));
+
         Scanner sc = new Scanner(System.in);
         
         System.out.println("Bienvenue sur Quarto !");
@@ -127,9 +212,9 @@ public class Main {
                 }
 
                 IA ia;
-                if(choixDifficulte == 1) ia = new IA(1, partie);
-                if(choixDifficulte == 2) ia = new IA(3, partie);
-                else ia = new IA(5, partie);
+                if(choixDifficulte == 1) ia = new IA(partie, 1);
+                else if(choixDifficulte == 2) ia = new IA(partie, 3);
+                else ia = new IA(partie, 5);
                 
                 while(!partie.testTerminal()) {
                     System.out.println();
@@ -137,11 +222,13 @@ public class Main {
                     System.out.println();
                     
                     if(partie.getTourJ1()) {
-                        Joueur.deposerPiece(ia.minimaxAlphaBetaChoixPiece(), partie, partie.getJoueur1(), sc);
+                        Joueur.deposerPiece(ia.choixPiece(), partie, partie.getJoueur1(), sc);
                     }
                     else {
                         ia.deposerPiece(Joueur.choixPiece(partie, partie.getJoueur1(), sc));
                     }
+
+                    // System.out.println(ia.minimaxAlphaBeta().getPiece() + " " + ia.minimaxAlphaBeta().getI() + ia.minimaxAlphaBeta().getJ());
                     
                     if(partie.aGagne() && partie.getTourJ1()) {
                         System.out.println();
@@ -178,30 +265,3 @@ public class Main {
         sc.close();
     }
 }
-
-
-// public class Main {
-    //     public static void main(String[] args) {
-        //         System.out.println("Bienvenue sur Quarto !");    
-        //         System.out.println();
-        
-        //         int rep = 0;
-        //         Scanner sc = new Scanner(System.in);
-        
-        //         while(rep<1 || rep>2) {
-            //             try {
-                //                 System.out.println("Match en entre amis ou contre l'ordinateur ? (1 : j1 VS j2), (2 : j1 VS ia)");
-                //                 rep = sc.nextInt();
-                //                 if(rep<1 || rep>2) {
-                    //                     System.out.println("VEUILLEZ ENTRER 1 OU 2 S'IL-VOUS-PLAIT.");
-                    //                 }
-                    //             }	
-                    //             catch(InputMismatchException e) {
-                        //                 System.out.println("VEUILLEZ ENTRER 1 OU 2 S'IL-VOUS-PLAIT.");
-                        //             }
-                        //         }
-                        
-                        //         if(rep == 1) Plateau.deuxJoueurs();
-                        //         else Plateau.ia();
-                        //     }
-                        // }
