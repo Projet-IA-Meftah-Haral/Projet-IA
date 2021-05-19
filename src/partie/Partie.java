@@ -432,18 +432,28 @@ public class Partie {
 	}
 	
 	public int utilite(Piece piece) {
-		//Le joueur 2 est l'ia
-		if((troisPiecesMemeColonne(piece) || troisPiecesMemeDiag(piece) || troisPiecesMemeLigne(piece)) && tourJ1) {
-			return -2;
+		//J1 = humain - J2 = IA
+		if (aGagne()) {
+			if (tourJ1) {
+				return -3;
+			} else {
+				return 3;
+			}
+		} else if (plateauRempli() && !aGagne()) {
+			return 0;
+		} else if ((troisPiecesMemeColonne(piece) || troisPiecesMemeDiag(piece) || troisPiecesMemeLigne(piece))){
+			if (tourJ1) {
+				return -2;
+			} else {
+				return 2;
+			}
+		} else {
+			if (tourJ1) {
+				return -1;
+			} else {
+				return 1;
+			}
 		}
-		if((troisPiecesMemeColonne(piece) || troisPiecesMemeDiag(piece) || troisPiecesMemeLigne(piece)) && !tourJ1) {
-			return 2;
-		}
-		if(plateauRempli() && !aGagne()) return 0;
-		if(tourJ1 && aGagne()) return -3;
-		if(!tourJ1 && aGagne()) return 3;
-		if(tourJ1) return -1;
-		return 1;
 	}
 	
 	public boolean troisPiecesMemeDiag(Piece piece) {
