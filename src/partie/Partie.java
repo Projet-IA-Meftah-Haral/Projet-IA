@@ -20,14 +20,6 @@ public class Partie {
 	* 
 	*/
 	public Partie(String j1, String j2, boolean tj1) {
-		// Le plateau est initialisé avec des pièces afin de ne pas provoquer d'erreur
-		for(int i=0; i<plateau.length; i++) {
-			for(int j=0; j<plateau.length; j++) {
-				plateau[i][j] = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.CREUSE);
-				plateau[i][j].setCaseVide(true);
-			}
-		}
-		
 		piecesDisponibles.add(new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.CREUSE));
 		piecesDisponibles.add(new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.PLEINE));
 		piecesDisponibles.add(new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.HAUTE, PleineOuCreuse.CREUSE));
@@ -86,9 +78,9 @@ public class Partie {
 		this.plateau = plateau;
 	}
 
-	public void setPiecesDisponibles(Piece p) {
-		piecesDisponibles.remove(p);
-	}
+	// public void setPiecesDisponibles(Piece p) {
+	// 	piecesDisponibles.remove(p);
+	// }
 	
 	/**
 	* Modificateur du tour humain
@@ -104,7 +96,8 @@ public class Partie {
 	public void affichagePlateau() {
 		for(int i=0; i<plateau.length; i++){
 			for(int j=0; j<plateau.length; j++){
-				System.out.print(plateau[i][j] + " ");
+				if(plateau[i][j] == null) System.out.print("vide ");
+				else System.out.print(plateau[i][j] + " ");
 			}
 			System.out.println();
 		}
@@ -127,7 +120,7 @@ public class Partie {
 	* @return true si la case choisie est disponible, false sinon
 	*/
 	public boolean remplirPlateau(Piece p, int i, int j) {
-		if(plateau[i-1][j-1].getCaseVide()) {
+		if(plateau[i-1][j-1] == null) {
 			plateau[i-1][j-1] = p;
 			return true;
 		}
@@ -146,7 +139,7 @@ public class Partie {
 	public boolean plateauRempli() {
 		for(int i=0; i<plateau.length; i++) {
 			for(int j=0; j<plateau.length; j++) {
-				if(plateau[i][j].getCaseVide()) return false;
+				if(plateau[i][j] == null) return false;
 			}
 		}
 		return true;
@@ -171,7 +164,7 @@ public class Partie {
 		
 		for(int i=0; i<plateau.length-1; i++) {
 			if(couleur) {
-				if(plateau[i][i].getCaseVide() || plateau[i+1][i+1].getCaseVide() ||
+				if(plateau[i][i] == null || plateau[i+1][i+1] == null ||
 				plateau[i][i].getCouleur() != plateau[i+1][i+1].getCouleur()) {
 					couleur = false;
 				}
@@ -179,7 +172,7 @@ public class Partie {
 			}
 			
 			if(forme) {
-				if(plateau[i][i].getCaseVide() || plateau[i+1][i+1].getCaseVide() ||
+				if(plateau[i][i]==null || plateau[i+1][i+1]==null ||
 				plateau[i][i].getForme() != plateau[i+1][i+1].getForme()) {
 					forme = false;
 				}
@@ -187,7 +180,7 @@ public class Partie {
 			}
 			
 			if(hauteur) {
-				if(plateau[i][i].getCaseVide() || plateau[i+1][i+1].getCaseVide() ||
+				if(plateau[i][i]==null || plateau[i+1][i+1]==null ||
 				plateau[i][i].getHauteur() != plateau[i+1][i+1].getHauteur()) {
 					hauteur = false;
 				}
@@ -195,7 +188,7 @@ public class Partie {
 			}
 			
 			if(pleineCreuse) {
-				if(plateau[i][i].getCaseVide() || plateau[i+1][i+1].getCaseVide() ||
+				if(plateau[i][i]==null || plateau[i+1][i+1]==null ||
 				plateau[i][i].getPleineOuCreuse() != plateau[i+1][i+1].getPleineOuCreuse()) {
 					pleineCreuse = false;
 				}
@@ -214,7 +207,7 @@ public class Partie {
 			
 			for(int i=plateau.length-1, j=0; j<plateau.length-1; i--, j++) {
 				if(couleur) {
-					if(plateau[i][j].getCaseVide() || plateau[i-1][j+1].getCaseVide() ||
+					if(plateau[i][j]==null || plateau[i-1][j+1]==null ||
 					plateau[i][j].getCouleur() != plateau[i-1][j+1].getCouleur()) {
 						couleur = false;
 					}
@@ -222,7 +215,7 @@ public class Partie {
 				}
 				
 				if(forme) {
-					if(plateau[i][j].getCaseVide() || plateau[i-1][j+1].getCaseVide() ||
+					if(plateau[i][j]==null || plateau[i-1][j+1]==null ||
 					plateau[i][j].getForme() != plateau[i-1][j+1].getForme()) {
 						forme = false;
 					}
@@ -230,7 +223,7 @@ public class Partie {
 				}
 				
 				if(hauteur) {
-					if(plateau[i][j].getCaseVide() || plateau[i-1][j+1].getCaseVide() ||
+					if(plateau[i][j]==null || plateau[i-1][j+1]==null ||
 					plateau[i][j].getHauteur() != plateau[i-1][j+1].getHauteur()) {
 						hauteur = false;
 					}
@@ -238,7 +231,7 @@ public class Partie {
 				}
 				
 				if(pleineCreuse) {
-					if(plateau[i][j].getCaseVide() || plateau[i-1][j+1].getCaseVide() ||
+					if(plateau[i][j]==null || plateau[i-1][j+1]==null ||
 					plateau[i][j].getPleineOuCreuse() != plateau[i-1][j+1].getPleineOuCreuse()) {
 						pleineCreuse = false;
 					}
@@ -269,7 +262,7 @@ public class Partie {
 			for(int j=0; j<plateau.length-1; j++) {
 				
 				if(couleur) {
-					if(plateau[i][j].getCaseVide() || plateau[i][j+1].getCaseVide() ||
+					if(plateau[i][j]==null || plateau[i][j+1]==null ||
 					plateau[i][j].getCouleur() != plateau[i][j+1].getCouleur()) {
 						couleur = false;
 					}
@@ -277,7 +270,7 @@ public class Partie {
 				}
 				
 				if(forme) {
-					if(plateau[i][j].getCaseVide() || plateau[i][j+1].getCaseVide() ||
+					if(plateau[i][j]==null || plateau[i][j+1]==null ||
 					plateau[i][j].getForme() != plateau[i][j+1].getForme()) {
 						forme = false;
 					}
@@ -285,7 +278,7 @@ public class Partie {
 				}
 				
 				if(hauteur) {
-					if(plateau[i][j].getCaseVide() || plateau[i][j+1].getCaseVide() ||
+					if(plateau[i][j]==null || plateau[i][j+1]==null ||
 					plateau[i][j].getHauteur() != plateau[i][j+1].getHauteur()) {
 						hauteur = false;
 					}
@@ -293,7 +286,7 @@ public class Partie {
 				}
 				
 				if(pleineCreuse) {
-					if(plateau[i][j].getCaseVide() || plateau[i][j+1].getCaseVide() ||
+					if(plateau[i][j]==null || plateau[i][j+1]==null ||
 					plateau[i][j].getPleineOuCreuse() != plateau[i][j+1].getPleineOuCreuse()) {
 						pleineCreuse = false;
 					}
@@ -334,7 +327,7 @@ public class Partie {
 			for(int i=0; i<plateau.length-1; i++) {
 				
 				if(couleur) {
-					if(plateau[i][j].getCaseVide() || plateau[i+1][j].getCaseVide() ||
+					if(plateau[i][j]==null || plateau[i+1][j]==null ||
 					plateau[i][j].getCouleur() != plateau[i+1][j].getCouleur()) {
 						couleur = false;
 					}
@@ -342,7 +335,7 @@ public class Partie {
 				}
 				
 				if(forme) {
-					if(plateau[i][j].getCaseVide() || plateau[i+1][j].getCaseVide() || 
+					if(plateau[i][j]==null || plateau[i+1][j]==null || 
 					plateau[i][j].getForme() != plateau[i+1][j].getForme()) {
 						forme = false;
 					}
@@ -350,7 +343,7 @@ public class Partie {
 				}
 				
 				if(hauteur) {
-					if(plateau[i][j].getCaseVide() || plateau[i+1][j].getCaseVide() ||
+					if(plateau[i][j]==null || plateau[i+1][j]==null ||
 					plateau[i][j].getHauteur() != plateau[i+1][j].getHauteur()) {
 						hauteur = false;
 					}
@@ -358,7 +351,7 @@ public class Partie {
 				}
 				
 				if(pleineCreuse) {
-					if(plateau[i][j].getCaseVide() || plateau[i+1][j].getCaseVide() ||
+					if(plateau[i][j]==null || plateau[i+1][j]==null ||
 					plateau[i][j].getPleineOuCreuse() != plateau[i+1][j].getPleineOuCreuse()) {
 						pleineCreuse = false;
 					}
@@ -386,16 +379,13 @@ public class Partie {
 	}
 	
 	public List<Action> actionsPossibles() {
-	
 		List<Action> actions = new ArrayList<>();
 
 		for(int i=0; i<plateau.length; i++) {
 			for(int j=0; j<plateau.length; j++) {
 				// Si la case est vide on rempli la liste des actions selon les pièces dispo et la position du plateau 
-				Piece[][] nouveauPlateau = plateau;
-				if(nouveauPlateau[i][j].getCaseVide()) {
+				if(plateau[i][j]==null) {
 					for(Piece p : piecesDisponibles) {
-						// p.setCaseVide(false);
 						actions.add(new Action(p, new Position(i, j)));
 					}
 				}
@@ -405,30 +395,33 @@ public class Partie {
 		return actions;
 	}
 
+	public List<Action> actionsPossiblesPiece(Piece piece) {
+		List<Action> actions = new ArrayList<>();
+
+		for(int i=0; i<plateau.length; i++) {
+			for(int j=0; j<plateau.length; j++) {
+				if(plateau[i][j]==null) {
+					actions.add(new Action(piece, new Position(i,j)));
+				}
+			}
+		}
+
+		return actions;
+	}
+
 	public Partie successeur(Action action) {
-		Partie nouvelEtat = this;
-        Piece[][] nouveauPlateau = plateau;
-
-		// action.getPiece().setCaseVide();
-		nouveauPlateau[action.getI()][action.getJ()] = action.getPiece();
-		nouvelEtat.setPlateau(nouveauPlateau);
-		nouvelEtat.setTourJ1();
-		nouvelEtat.setPiecesDisponibles(action.getPiece());
-
-        return nouvelEtat;
+		Piece piece = action.getPiece();
+		plateau[action.getI()][action.getJ()] = piece;
+		setTourJ1();
+		supprimerPiece(piece);
+		return this;
 	}
 
 	public Partie defaireAction(Action action) {
-		Partie nouvelEtat = this;
-		Piece[][] nouveauPlateau = plateau;
-
-		nouveauPlateau[action.getI()][action.getJ()].setCaseVide(true);
-		nouvelEtat.setPlateau(plateau);
-		nouvelEtat.setTourJ1();
-
-		nouvelEtat.getPiecesDisponibles().add(action.getPiece());
-
-		return nouvelEtat;
+		plateau[action.getI()][action.getJ()] = null;
+		setTourJ1();
+		piecesDisponibles.add(action.getPiece());
+		return this;
 	}
 	
 	public int utilite(Piece piece) {
@@ -463,7 +456,7 @@ public class Partie {
 		List<PleineOuCreuse> pleinesCreuses = new ArrayList<>();
 		
 		for(int i=0; i<plateau.length; i++) {
-			if(!plateau[i][i].getCaseVide()) {
+			if(plateau[i][i]!=null) {
 				couleurs.add(plateau[i][i].getCouleur());
 				formes.add(plateau[i][i].getForme());
 				hauteurs.add(plateau[i][i].getHauteur());
@@ -537,7 +530,7 @@ public class Partie {
 		pleinesCreuses.clear();
 		
 		for(int i=plateau.length-1, j=0; j<plateau.length; i--, j++) {
-			if(!plateau[i][j].getCaseVide()) {
+			if(plateau[i][j]!=null) {
 				couleurs.add(plateau[i][j].getCouleur());
 				formes.add(plateau[i][j].getForme());
 				hauteurs.add(plateau[i][j].getHauteur());
@@ -616,7 +609,7 @@ public class Partie {
 		
 		for(int i=0; i<plateau.length; i++) {
 			for(int j=0; j<plateau.length; j++) {
-				if(!plateau[i][j].getCaseVide()) {
+				if(plateau[i][j]!=null) {
 					couleurs.add(plateau[i][j].getCouleur());
 					formes.add(plateau[i][j].getForme());
 					hauteurs.add(plateau[i][j].getHauteur());
@@ -701,7 +694,7 @@ public class Partie {
 		
 		for(int i=0; i<plateau.length; i++) {
 			for(int j=0; j<plateau.length; j++) {
-				if(!plateau[j][i].getCaseVide()) {
+				if(plateau[j][i]!=null) {
 					couleurs.add(plateau[j][i].getCouleur());
 					formes.add(plateau[j][i].getForme());
 					hauteurs.add(plateau[j][i].getHauteur());

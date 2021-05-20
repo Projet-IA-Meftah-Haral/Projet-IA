@@ -1,5 +1,7 @@
 package ia;
 
+import java.util.List;
+
 import partie.Partie;
 import partie.Piece;
 
@@ -14,6 +16,10 @@ public class IA {
         partie = p;
         meilleureAction = null;
         piece = null;
+    }    
+
+    public Partie getPartie() {
+        return partie;
     }
 
     /**
@@ -23,62 +29,68 @@ public class IA {
      */
     public Piece choixPiece() {
         // Algorithme Minimax avec l'élagage Alpha-Beta
-        valeurMin(profondeur, -4, 3);
+        valeurMin(profondeur, -4, 4);
 
         Piece p = meilleureAction.getPiece();
-        p.setCaseVide(false);
-        // p.setCaseVide(false);
-        partie.setPiecesDisponibles(p);
+        partie.supprimerPiece(p);
         System.out.println("L'ordinateur a choisi la pièce " + p + ".");
-        // partie.affichagePlateau();
 
         return p;
     }
 
     public void deposerPiece(Piece p) {
-        valeurMax(profondeur, -4, 3);
+        piece = p;
 
-        // piece = p;
-        // piece.setCaseVide(false);
-        
+        valeurMax(profondeur, -4, 4);
+
         Position pos = meilleureAction.getPosition();
-        int i = pos.getI();
-        int j = pos.getJ();
-        partie.remplirPlateau(p, i+1, j+1);
+        int i = pos.getI()+1;
+        int j = pos.getJ()+1;
+
+        partie.remplirPlateau(p, i, j);
 
         System.out.println();
-        System.out.println("L'ordinateur a déposé la pièce à la position ("+(i+1)+","+(j+1)+").");
+        System.out.println("L'ordinateur a déposé la pièce à la position ("+i+","+j+").");
     }
-
-    // public Action minimaxAlphaBeta() {
-    //     valeurMax(profondeur, -4, 3);
-    //     meilleureAction.getPiece().setCaseVide(false);
-    //     return meilleureAction;
-    // }
 
     public int valeurMax(int prof, int alpha, int beta) {
 
         if (partie.testTerminal() || prof == 0) return partie.utilite(piece);
 
-        for (Action a : partie.actionsPossibles()) {
-            // a.getPiece().setCaseVide(false);
-            // System.out.println(a.getPiece() + " " + a.getI() + a.getJ()); 
+        if(!partie.getTourJ1()) {
+            List<Action> actions = partie.actionsPossiblesPiece(piece);
 
-            if (partie.getTourJ1()) {
-                piece = a.getPiece();
-                // piece.setCaseVide(false);
-            }    
-
-            partie = partie.successeur(a);
-            int utilite = valeurMax(prof - 1, alpha, beta);
-            partie.defaireAction(a);
-
-            if (utilite > alpha) {
-                alpha = utilite;
-                if (prof == profondeur) meilleureAction = a;
+            for(Action a : actions) {
+                partie.successeur(a);
+                int utilite = valeurMin(prof - 1, alpha, beta);
+                partie.defaireAction(a);
+    
+                if (utilite > alpha) {
+                    alpha = utilite;
+                    if (prof == profondeur) meilleureAction = a;
+                }
+    
+                if (alpha >= beta) return alpha;    
             }
+        } 
+        
+        else {
+            List<Action> actions = partie.actionsPossibles();
 
-            if (alpha >= beta) return alpha;
+            for (Action a : actions) {
+                piece = a.getPiece();
+    
+                partie.successeur(a);
+                int utilite = valeurMin(prof - 1, alpha, beta);
+                partie.defaireAction(a);
+    
+                if (utilite > alpha) {
+                    alpha = utilite;
+                    if (prof == profondeur) meilleureAction = a;
+                }
+    
+                if (alpha >= beta) return alpha;
+            }
         }
 
         return alpha;
@@ -88,25 +100,40 @@ public class IA {
 
         if (partie.testTerminal() || prof == 0) return partie.utilite(piece);
 
-        for (Action a : partie.actionsPossibles()) {
-            // a.getPiece().setCaseVide(false);
-            // System.out.println(a.getPiece() + " " + a.getI() + a.getJ()); 
+        if (!partie.getTourJ1()) {
+            List<Action> actions = partie.actionsPossiblesPiece(piece);
 
-            if (partie.getTourJ1()) {
-                piece = a.getPiece();
-                // piece.setCaseVide(false);
+            for(Action a : actions) {
+                partie.successeur(a);
+                int utilite = valeurMax(prof - 1, alpha, beta);
+                partie.defaireAction(a);
+
+                if (utilite < beta) {
+                    beta = utilite;
+                    if (prof == profondeur) meilleureAction = a;
+                }
+
+                if (beta <= alpha) return beta;
             }    
+        } 
+        
+        else {
+            List<Action> actions = partie.actionsPossibles();
 
-            partie = partie.successeur(a);
-            int utilite = valeurMax(prof - 1, alpha, beta);
-            partie.defaireAction(a);
+            for(Action a : actions) {
+                piece = a.getPiece();
 
-            if (utilite < beta) {
-                beta = utilite;
-                if (prof == profondeur) meilleureAction = a;
-            }
+                partie.successeur(a);
+                int utilite = valeurMax(prof - 1, alpha, beta);
+                partie.defaireAction(a);
 
-            if (beta <= alpha) return beta;
+                if (utilite < beta) {
+                    beta = utilite;
+                    if (prof == profondeur) meilleureAction = a;
+                }
+
+                if (beta <= alpha) return beta;
+            }    
         }
 
         return beta;

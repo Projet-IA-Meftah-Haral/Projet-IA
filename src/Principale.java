@@ -13,6 +13,20 @@ import caracteristiquesPiece.*;
 public class Principale {
     public static void main(String[] args) throws Exception { 
 
+        // Piece p = null;
+        // if(p == null) System.out.println("vide");
+
+        // Partie p = new Partie("j1", "j2", true);
+        // p.remplirPlateau(new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.HAUTE, PleineOuCreuse.PLEINE), 4, 1);
+        // p.affichagePlateau();
+        // System.out.println(p.plateauRempli()); 
+
+        // Partie p = new Partie("j1", "j2", true);
+        // System.out.println(p);
+        // p.getPlateau()[0][0] = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.CREUSE);
+        // p.affichagePlateau();
+        // System.out.println(p);
+
         // Partie etat = new Partie("humain", "ia", true);
         // Partie nouvelEtat = etat;
 
@@ -31,6 +45,9 @@ public class Principale {
 
         // Partie etat = new Partie("humain", "ia", true);
         // for(Action a : etat.actionsPossibles()) System.out.println(a.getPiece() + " " + a.getI() + a.getJ());  
+
+        // Partie etat = new Partie("humain", "ia", true);
+        // for(Action a : etat.actionsPossiblesPiece(new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.CREUSE))) System.out.println(a.getPiece() + " " + a.getI() + a.getJ());  
         
         // //TESTER SUCCESSEUR() ET DEFAIREACTION()
         // Partie etat = new Partie("humain", "ia", true);
@@ -38,15 +55,14 @@ public class Principale {
         // System.out.println(etat.getPiecesDisponibles().size());
         // System.out.println(etat.getTourJ1());
         // Piece p = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.CREUSE);
-        // p.setCaseVide(false);
-        // Partie nouvelEtat = etat.successeur(new Action(p, new Position(0, 0)));
-        // nouvelEtat.affichagePlateau();
-        // System.out.println(nouvelEtat.getPiecesDisponibles().size());
-        // System.out.println(nouvelEtat.getTourJ1());
-        // nouvelEtat.defaireAction(new Action(p, new Position(0, 0)));
-        // nouvelEtat.affichagePlateau();
-        // System.out.println(nouvelEtat.getPiecesDisponibles().size());
-        // System.out.println(nouvelEtat.getTourJ1());
+        // etat.successeur(new Action(p, new Position(0, 0)));
+        // etat.affichagePlateau();
+        // System.out.println(etat.getPiecesDisponibles().size());
+        // System.out.println(etat.getTourJ1());
+        // etat.defaireAction(new Action(p, new Position(0, 0)));
+        // etat.affichagePlateau();
+        // System.out.println(etat.getPiecesDisponibles().size());
+        // System.out.println(etat.getTourJ1());
 
         // //TESTER TROISPIECESMEMEDIAG()
         // Partie etat = new Partie("humain", "ia", true);
@@ -119,6 +135,7 @@ public class Principale {
         
         if(choix == 1) {
             try {
+                System.out.println();
                 System.out.print("Joueur 1, quel est votre nom ? ");
                 String joueur1 = sc.nextLine();
                 
@@ -211,10 +228,7 @@ public class Principale {
                     }
                 }
 
-                IA ia;
-                if(choixDifficulte == 1) ia = new IA(partie, 1);
-                else if(choixDifficulte == 2) ia = new IA(partie, 3);
-                else ia = new IA(partie, 5);
+                IA ia = new IA(partie, choixDifficulte);
                 
                 while(!partie.testTerminal()) {
                     System.out.println();
@@ -227,8 +241,7 @@ public class Principale {
                     else {
                         ia.deposerPiece(Joueur.choixPiece(partie, partie.getJoueur1(), sc));
                     }
-
-                    // System.out.println(ia.minimaxAlphaBeta().getPiece() + " " + ia.minimaxAlphaBeta().getI() + ia.minimaxAlphaBeta().getJ());
+                    partie = ia.getPartie();
                     
                     if(partie.aGagne() && partie.getTourJ1()) {
                         System.out.println();

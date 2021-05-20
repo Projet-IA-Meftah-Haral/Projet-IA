@@ -167,7 +167,7 @@ public class Joueur {
 				}
 			}
 
-			piece.setCaseVide(false);
+			// piece.setCaseVide(false);
 			if(partie.remplirPlateau(piece, i, j)) caseDispo = true;
 			else System.out.println("CETTE CASE EST DÉJÀ PRISE.");
 		}
