@@ -18,7 +18,7 @@ public class Principale {
 
         // Partie p = new Partie("j1", "j2", true);
         // p.remplirPlateau(new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.HAUTE, PleineOuCreuse.PLEINE), 4, 1);
-        // p.affichagePlateau();
+        // p.afficherPlateau();
         // System.out.println(p.plateauRempli()); 
 
         // Partie p = new Partie("j1", "j2", true);
@@ -152,7 +152,7 @@ public class Principale {
                 
                 while(!partie.testTerminal()) {
                     System.out.println();
-                    partie.affichagePlateau();
+                    partie.afficherPlateau();
                     System.out.println();
                     
                     if(partie.getTourJ1()) {
@@ -164,21 +164,21 @@ public class Principale {
                     
                     if(partie.aGagne() && partie.getTourJ1()) {
                         System.out.println();
-                        partie.affichagePlateau();
+                        partie.afficherPlateau();
                         System.out.println();
                         System.out.println(partie.getJoueur1() + " a gagné !");
                     }
                     
                     else if(partie.aGagne() && !partie.getTourJ1()) {
                         System.out.println();
-                        partie.affichagePlateau();
+                        partie.afficherPlateau();
                         System.out.println();
                         System.out.println(partie.getJoueur2() + " a gagné !");
                     }
                     
                     else if(partie.plateauRempli()) {
                         System.out.println();
-                        partie.affichagePlateau();
+                        partie.afficherPlateau();
                         System.out.println();
                         System.out.println("Pas de vainqueur ! Le plateau est rempli.");
                     }
@@ -232,34 +232,38 @@ public class Principale {
                 
                 while(!partie.testTerminal()) {
                     System.out.println();
-                    partie.affichagePlateau();
+                    partie.afficherPlateau();
                     System.out.println();
                     
                     if(partie.getTourJ1()) {
                         Joueur.deposerPiece(ia.choixPiece(), partie, partie.getJoueur1(), sc);
+                        System.out.println(partie.getPiecesDisponibles().size());
+
                     }
                     else {
                         ia.deposerPiece(Joueur.choixPiece(partie, partie.getJoueur1(), sc));
+                        System.out.println(partie.getPiecesDisponibles().size());
+
                     }
                     partie = ia.getPartie();
                     
                     if(partie.aGagne() && partie.getTourJ1()) {
                         System.out.println();
-                        partie.affichagePlateau();
+                        partie.afficherPlateau();
                         System.out.println();
                         System.out.println(partie.getJoueur1() + " a gagné !");
                     }
                     
                     else if(partie.aGagne() && !partie.getTourJ1()) {
                         System.out.println();
-                        partie.affichagePlateau();
+                        partie.afficherPlateau();
                         System.out.println();
                         System.out.println("L'ordinateur a gagné !");
                     }
                     
                     else if(partie.plateauRempli() && !partie.aGagne()) {
                         System.out.println();
-                        partie.affichagePlateau();
+                        partie.afficherPlateau();
                         System.out.println();
                         System.out.println("Pas de vainqueur ! Le plateau est rempli.");
                     }

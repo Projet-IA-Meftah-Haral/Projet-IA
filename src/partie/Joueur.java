@@ -103,14 +103,14 @@ public class Joueur {
 			}
 			
 			piece = new Piece(couleur, forme, hauteur, pleineOuCreuse);
-			if(!partie.supprimerPiece(piece)) {
+			if(partie.supprimerPiece(piece)) {
+				// System.out.println(partie.getPiecesDisponibles().size());
+				pieceDispo = true;
+			}
+			else {
 				System.out.println();
 				System.out.println("CETTE PIÈCE N'EST PLUS DISPONIBLE.");
 				System.out.println();
-			}
-			else {
-				pieceDispo = true;
-				partie.supprimerPiece(piece);
 			}	
 		}
 
@@ -167,7 +167,6 @@ public class Joueur {
 				}
 			}
 
-			// piece.setCaseVide(false);
 			if(partie.remplirPlateau(piece, i, j)) caseDispo = true;
 			else System.out.println("CETTE CASE EST DÉJÀ PRISE.");
 		}

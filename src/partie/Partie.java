@@ -70,16 +70,12 @@ public class Partie {
 		return tourJ1;
 	}
 	
-	/**
-	* Modification du plateau
-	* @param plateau un plateau
-	*/
-	public void setPlateau(Piece[][] plateau) {
-		this.plateau = plateau;
-	}
-
-	// public void setPiecesDisponibles(Piece p) {
-	// 	piecesDisponibles.remove(p);
+	// /**
+	// * Modification du plateau
+	// * @param plateau un plateau
+	// */
+	// public void setPlateau(Piece[][] plateau) {
+	// 	this.plateau = plateau;
 	// }
 	
 	/**
@@ -93,14 +89,20 @@ public class Partie {
 	/**
 	* Affiche le plateau de la partie en cours
 	*/
-	public void affichagePlateau() {
+	public void afficherPlateau() {
 		for(int i=0; i<plateau.length; i++){
 			for(int j=0; j<plateau.length; j++){
-				if(plateau[i][j] == null) System.out.print("vide ");
+				if(plateau[i][j] == null) System.out.print("vide\t\t\t\t");
 				else System.out.print(plateau[i][j] + " ");
 			}
 			System.out.println();
 		}
+	}
+
+	public void afficherPiecesDisponibles() {
+		for(Piece p : piecesDisponibles) System.out.println(p);
+		System.out.println(piecesDisponibles.size());
+		System.out.println();
 	}
 	
 	public boolean supprimerPiece(Piece p) {
@@ -428,9 +430,9 @@ public class Partie {
 		//J1 = humain - J2 = IA
 		if (aGagne()) {
 			if (tourJ1) {
-				return -3;
-			} else {
 				return 3;
+			} else {
+				return -3;
 			}
 		} else if (plateauRempli() && !aGagne()) {
 			return 0;
