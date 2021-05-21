@@ -192,8 +192,7 @@ public class Principale {
             catch (IllegalStateException e) {
                 System.err.println("Le scanner est déjà fermé");
             }
-        }
-        
+        } 
         else {
             try {
                 System.out.println();
@@ -227,23 +226,34 @@ public class Principale {
                         System.out.println("VEUILLEZ ENTRER UN CHIFFRE COMPRIS ENTRE 1 ET 3 S'IL-VOUS-PLAIT.");
                     }
                 }
-
-                IA ia = new IA(partie, choixDifficulte);
+                //Pour le choix 2 et 3 on utilise l'IA avec une profondeur et Minimax
                 
+                IA ia = new IA(partie, 1);
+
+                if (choixDifficulte == 2) {
+                    ia = new IA(partie, 1);
+                } else if (choixDifficulte == 3) {
+                    ia = new IA(partie, 3);
+                }
+
                 while(!partie.testTerminal()) {
                     System.out.println();
                     partie.afficherPlateau();
                     System.out.println();
                     
                     if(partie.getTourJ1()) {
-                        Joueur.deposerPiece(ia.choixPiece(), partie, partie.getJoueur1(), sc);
-                        System.out.println(partie.getPiecesDisponibles().size());
-
+                        if (choixDifficulte == 1) { //Si niveau facile on applique l'algo random
+                            Joueur.deposerPiece(ia.choixPieceRandom(), partie, partie.getJoueur1(), sc);
+                        } else {
+                            Joueur.deposerPiece(ia.choixPiece(), partie, partie.getJoueur1(), sc);
+                        }
                     }
                     else {
-                        ia.deposerPiece(Joueur.choixPiece(partie, partie.getJoueur1(), sc));
-                        System.out.println(partie.getPiecesDisponibles().size());
-
+                        if (choixDifficulte == 1) { //Si niveau facile on applique l'algo random
+                            ia.deposerPieceRandom(Joueur.choixPiece(partie, partie.getJoueur1(), sc));
+                        } else {
+                            ia.deposerPieceRandom(Joueur.choixPiece(partie, partie.getJoueur1(), sc));
+                        }
                     }
                     partie = ia.getPartie();
                     

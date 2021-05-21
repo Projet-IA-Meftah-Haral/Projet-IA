@@ -92,17 +92,15 @@ public class Partie {
 	public void afficherPlateau() {
 		for(int i=0; i<plateau.length; i++){
 			for(int j=0; j<plateau.length; j++){
-				if(plateau[i][j] == null) System.out.print("vide\t\t\t\t");
-				else System.out.print(plateau[i][j] + " ");
+				if(plateau[i][j] == null) System.out.print("vide\t");
+				else System.out.print(plateau[i][j] + "\t");
 			}
 			System.out.println();
 		}
 	}
 
 	public void afficherPiecesDisponibles() {
-		for(Piece p : piecesDisponibles) System.out.println(p);
-		System.out.println(piecesDisponibles.size());
-		System.out.println();
+		for(Piece p : piecesDisponibles) System.out.print(p + " ");
 	}
 	
 	public boolean supprimerPiece(Piece p) {

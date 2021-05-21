@@ -45,6 +45,17 @@ public class Piece {
 	
 	@Override
 	public String toString() {
-		return "(" + couleur + "," + forme + "," + hauteur + "," + pleineOuCreuse + ")";
+		String c, f, h, p;
+		
+		if(couleur == Couleur.BLANCHE) c = "B";
+		else c = "N";
+		if(forme == Forme.CARREE) f = "C";
+		else f = "R";
+		if(hauteur == Hauteur.BASSE) h = "B";
+		else h = "H";
+		if(pleineOuCreuse == PleineOuCreuse.CREUSE) p = "C";
+		else p = "P";
+
+		return c+f+h+p;
 	}
 }
