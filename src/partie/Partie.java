@@ -98,10 +98,6 @@ public class Partie {
 			System.out.println();
 		}
 	}
-
-	public void afficherPiecesDisponibles() {
-		for(Piece p : piecesDisponibles) System.out.print(p + " ");
-	}
 	
 	public boolean supprimerPiece(Piece p) {
 		for(Piece piece : piecesDisponibles) {

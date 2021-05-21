@@ -26,15 +26,15 @@ public class Joueur {
 		while(!pieceDispo) {
 			String c="", f="", h="", p="";
 			
-			while(!c.equals("B") && !c.equals("N")) {
+			while(!c.equals("B") && !c.equals("N") && !c.equals("b") && !c.equals("n")) {
 				try {
 					System.out.print("Couleur (B pour blanche, N pour noire) : ");
 					c = sc.nextLine();
 					switch(c) {
-						case "B" : 
+						case "B", "b" : 
 							couleur = Couleur.BLANCHE;
 							break;
-						case "N" : 
+						case "N", "n" : 
 							couleur = Couleur.NOIRE;
 							break;
 						default : System.out.println("VEUILLEZ ENTRER 'B' OU 'N' S'IL-VOUS-PLAIT.");
@@ -45,15 +45,15 @@ public class Joueur {
 				}
 			}
 			
-			while(!f.equals("R") && !f.equals("C")) {
+			while(!f.equals("R") && !f.equals("C") && !f.equals("r") && !f.equals("c")) {
 				try {
 					System.out.print("Forme (R pour ronde, C pour carrée) : ");
 					f = sc.nextLine();
 					switch(f) {
-						case "R" : 
+						case "R", "r" : 
 							forme = Forme.RONDE;
 							break;
-						case "C" : 
+						case "C", "c" : 
 							forme = Forme.CARREE;
 							break;
 						default : System.out.println("VEUILLEZ ENTRER 'R' OU 'C' S'IL-VOUS-PLAIT.");
@@ -64,15 +64,15 @@ public class Joueur {
 				}
 			}
 			
-			while(!h.equals("H") && !h.equals("B")) {
+			while(!h.equals("H") && !h.equals("B") && !h.equals("h") && !h.equals("b")) {
 				try {
 					System.out.print("Hauteur (H pour haute, B pour basse) : ");
 					h = sc.nextLine();
 					switch(h) {
-						case "H" : 
+						case "H", "h" : 
 							hauteur = Hauteur.HAUTE;
 							break;
-						case "B" : 
+						case "B", "b" : 
 							hauteur = Hauteur.BASSE;
 							break;
 						default : System.out.println("VEUILLEZ ENTRER 'H' OU 'B' S'IL-VOUS-PLAIT.");
@@ -83,15 +83,15 @@ public class Joueur {
 				}
 			}
 			
-			while(!p.equals("P") && !p.equals("C")) {
+			while(!p.equals("P") && !p.equals("C") && !p.equals("p") && !p.equals("c")) {
 				try {
 					System.out.print("Pleine ou creuse (P pour pleine, C pour creuse) ? ");
 					p = sc.nextLine();
 					switch(p) {
-						case "P" : 
+						case "P", "p" : 
 							pleineOuCreuse = PleineOuCreuse.PLEINE;
 							break;
-						case "C" : 
+						case "C", "c" : 
 							pleineOuCreuse = PleineOuCreuse.CREUSE;
 							break;
 						default : System.out.println("VEUILLEZ ENTRER 'P' OU 'C' S'IL-VOUS-PLAIT.");

@@ -2,112 +2,12 @@ import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-import ia.Action;
 import ia.IA;
-import ia.Position;
 import partie.Joueur;
 import partie.Partie;
-import partie.Piece;
-import caracteristiquesPiece.*;
 
 public class Principale {
     public static void main(String[] args) throws Exception { 
-
-        // Piece p = null;
-        // if(p == null) System.out.println("vide");
-
-        // Partie p = new Partie("j1", "j2", true);
-        // p.remplirPlateau(new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.HAUTE, PleineOuCreuse.PLEINE), 4, 1);
-        // p.afficherPlateau();
-        // System.out.println(p.plateauRempli()); 
-
-        // Partie p = new Partie("j1", "j2", true);
-        // System.out.println(p);
-        // p.getPlateau()[0][0] = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.CREUSE);
-        // p.affichagePlateau();
-        // System.out.println(p);
-
-        // Partie etat = new Partie("humain", "ia", true);
-        // Partie nouvelEtat = etat;
-
-        // Piece[][] nouveauPlateau = etat.getPlateau();
-        // nouveauPlateau[0][0] = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.CREUSE);
-        // nouveauPlateau[0][0].setCaseVide();
-        // nouvelEtat.setPlateau(nouveauPlateau);
-
-        // Partie newEtat = nouvelEtat;
-        
-        // newEtat.affichagePlateau();
-
-        // Action action = new Action(new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.CREUSE), new Position(0,0));
-        // action.getPiece().setCaseVide();
-        // System.out.println(action.getPiece());
-
-        // Partie etat = new Partie("humain", "ia", true);
-        // for(Action a : etat.actionsPossibles()) System.out.println(a.getPiece() + " " + a.getI() + a.getJ());  
-
-        // Partie etat = new Partie("humain", "ia", true);
-        // for(Action a : etat.actionsPossiblesPiece(new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.CREUSE))) System.out.println(a.getPiece() + " " + a.getI() + a.getJ());  
-        
-        // //TESTER SUCCESSEUR() ET DEFAIREACTION()
-        // Partie etat = new Partie("humain", "ia", true);
-        // etat.affichagePlateau();
-        // System.out.println(etat.getPiecesDisponibles().size());
-        // System.out.println(etat.getTourJ1());
-        // Piece p = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.CREUSE);
-        // etat.successeur(new Action(p, new Position(0, 0)));
-        // etat.affichagePlateau();
-        // System.out.println(etat.getPiecesDisponibles().size());
-        // System.out.println(etat.getTourJ1());
-        // etat.defaireAction(new Action(p, new Position(0, 0)));
-        // etat.affichagePlateau();
-        // System.out.println(etat.getPiecesDisponibles().size());
-        // System.out.println(etat.getTourJ1());
-
-        // //TESTER TROISPIECESMEMEDIAG()
-        // Partie etat = new Partie("humain", "ia", true);
-        // Piece p1 = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.CREUSE);
-        // p1.setCaseVide(false);
-        // Piece p2 = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.PLEINE);
-        // p2.setCaseVide(false);
-        // Piece p3 = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.HAUTE, PleineOuCreuse.CREUSE);
-        // p3.setCaseVide(false);
-        // Piece[][] nouveauPlateau = etat.getPlateau();
-        // nouveauPlateau[3][0] = p1;
-        // nouveauPlateau[1][2] = p2; 
-        // nouveauPlateau[0][3] = p3;
-        // etat.setPlateau(nouveauPlateau);
-        // System.out.println(etat.troisPiecesMemeDiag(new Piece(Couleur.NOIRE, Forme.RONDE, Hauteur.BASSE, PleineOuCreuse.CREUSE)));
-
-        // //TESTER TROISPIECESMEMELIGNE()
-        // Partie etat = new Partie("humain", "ia", true);
-        // Piece p1 = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.CREUSE);
-        // p1.setCaseVide(false);
-        // Piece p2 = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.PLEINE);
-        // p2.setCaseVide(false);
-        // Piece p3 = new Piece(Couleur.NOIRE, Forme.CARREE, Hauteur.HAUTE, PleineOuCreuse.CREUSE);
-        // p3.setCaseVide(false);
-        // Piece[][] nouveauPlateau = etat.getPlateau();
-        // nouveauPlateau[0][0] = p1;
-        // nouveauPlateau[0][2] = p2; 
-        // nouveauPlateau[0][3] = p3;
-        // etat.setPlateau(nouveauPlateau);
-        // System.out.println(etat.troisPiecesMemeLigne(new Piece(Couleur.NOIRE, Forme.RONDE, Hauteur.BASSE, PleineOuCreuse.CREUSE)));
-
-        // //TESTER TROISPIECESMEMECOLONNE()
-        // Partie etat = new Partie("humain", "ia", true);
-        // Piece p1 = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.CREUSE);
-        // p1.setCaseVide(false);
-        // Piece p2 = new Piece(Couleur.BLANCHE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.PLEINE);
-        // p2.setCaseVide(false);
-        // Piece p3 = new Piece(Couleur.NOIRE, Forme.CARREE, Hauteur.HAUTE, PleineOuCreuse.CREUSE);
-        // p3.setCaseVide(false);
-        // Piece[][] nouveauPlateau = etat.getPlateau();
-        // nouveauPlateau[0][2] = p1;
-        // nouveauPlateau[1][2] = p2; 
-        // nouveauPlateau[2][2] = p3;
-        // etat.setPlateau(nouveauPlateau);
-        // System.out.println(etat.troisPiecesMemeColonne(new Piece(Couleur.NOIRE, Forme.CARREE, Hauteur.BASSE, PleineOuCreuse.CREUSE)));
 
         Scanner sc = new Scanner(System.in);
         
@@ -228,12 +128,12 @@ public class Principale {
                 }
                 //Pour le choix 2 et 3 on utilise l'IA avec une profondeur et Minimax
                 
-                IA ia = new IA(partie, 1);
+                IA ia = new IA(partie, choixDifficulte);
 
                 if (choixDifficulte == 2) {
                     ia = new IA(partie, 1);
                 } else if (choixDifficulte == 3) {
-                    ia = new IA(partie, 3);
+                    ia = new IA(partie, 2);
                 }
 
                 while(!partie.testTerminal()) {
@@ -252,7 +152,7 @@ public class Principale {
                         if (choixDifficulte == 1) { //Si niveau facile on applique l'algo random
                             ia.deposerPieceRandom(Joueur.choixPiece(partie, partie.getJoueur1(), sc));
                         } else {
-                            ia.deposerPieceRandom(Joueur.choixPiece(partie, partie.getJoueur1(), sc));
+                            ia.deposerPiece(Joueur.choixPiece(partie, partie.getJoueur1(), sc));
                         }
                     }
                     partie = ia.getPartie();

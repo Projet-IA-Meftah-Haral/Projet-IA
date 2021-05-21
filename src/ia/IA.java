@@ -19,6 +19,10 @@ public class IA {
         meilleureAction = null;
         piece = null;
     }    
+
+    public int getProfondeur() {
+        return profondeur;
+    }
     
     public Partie getPartie() {
         return partie;
@@ -33,6 +37,7 @@ public class IA {
         Collections.shuffle(pieces_dispos); //Mélange la liste de pièces au hasard
 
         Piece piece_random = pieces_dispos.get(0);
+        partie.supprimerPiece(piece_random);
         System.out.println("L'ordinateur a choisi la pièce " + piece_random + ".");
 
         return piece_random;
@@ -46,7 +51,9 @@ public class IA {
         List<Action> actions = partie.actionsPossiblesPiece(p);
 
         for (Action action : actions) {
+            partie = partie.successeur(action);
             if (partie.utilite(action.getPiece()) == 3) {
+                partie = partie.defaireAction(action);
                 int i = action.getI()+1;
                 int j = action.getJ()+1;
 
@@ -56,6 +63,7 @@ public class IA {
                 System.out.println("\nL'ordinateur a déposé la pièce à la position ("+i+","+j+").");
                 return;
             }
+            partie = partie.defaireAction(action);
         }
 
         Collections.shuffle(actions); //Mélange la liste d'actions au hasard
@@ -80,16 +88,14 @@ public class IA {
         valeurMax(profondeur, -4, 4);
         
         Piece p = meilleureAction.getPiece();
-        // System.out.println(partie.getPiecesDisponibles().size());
 
         List<Piece> piecesDispo = partie.getPiecesDisponibles();
         while(piecesDispo.contains(p)) {
             partie.supprimerPiece(p);
         } 
-        // System.out.println(partie.getPiecesDisponibles().size());
+
         System.out.println("L'ordinateur a choisi la pièce " + p + ".");
-        // System.out.println(partie.getPiecesDisponibles().size());
-        
+
         return p;
     }
     
@@ -121,12 +127,9 @@ public class IA {
             List<Action> actions = partie.actionsPossiblesPiece(piece);
             
             for(Action a : actions) {
-                
                 partie.successeur(a);
-                // System.out.println(partie.getPiecesDisponibles().size());
                 int utilite = valeurMin(prof - 1, alpha, beta);
                 partie.defaireAction(a);
-                // System.out.println(partie.getPiecesDisponibles().size());
                 
                 if (utilite > alpha) {
                     alpha = utilite;
@@ -150,10 +153,8 @@ public class IA {
 
                 if(!piecesDefaite.contains(piece)) {
                     partie.successeur(action);
-                    // System.out.println(partie.getPiecesDisponibles().size());
                     utilite = valeurMin(prof - 1, alpha, beta);
                     partie.defaireAction(action);
-                    // System.out.println(partie.getPiecesDisponibles().size());
                     
                     if(utilite == -3) {
                         piecesDefaite.add(piece); 
@@ -188,10 +189,8 @@ public class IA {
 
             for (Action a : actions) {
                 partie.successeur(a);
-                // System.out.println(partie.getPiecesDisponibles().size());
                 int utilite = valeurMax(prof - 1, alpha, beta);
                 partie.defaireAction(a);
-                // System.out.println(partie.getPiecesDisponibles().size());
 
                 if (utilite < beta) {
                     beta = utilite;
@@ -217,10 +216,8 @@ public class IA {
 
                 if(!piecesDefaite.contains(piece)) {
                     partie.successeur(action);
-                    // System.out.println(partie.getPiecesDisponibles().size());
                     utilite = valeurMax(prof - 1, alpha, beta);
                     partie.defaireAction(action);
-                    // System.out.println(partie.getPiecesDisponibles().size());
                     
                     if(utilite == -3) {
                         piecesDefaite.add(piece); 
