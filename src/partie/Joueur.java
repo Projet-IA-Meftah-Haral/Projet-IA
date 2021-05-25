@@ -7,9 +7,11 @@ import caracteristiquesPiece.*;
 
 public class Joueur {
 	/**
-	 * Demande au joueur quelle piece il veut fournir à l'adversaire
+	 * Demande au joueur de choisir une pièce pour son adversaire
+	 * @param partie la partie courante
+	 * @param nomJoueur le nom du joueur qui doit choisir la piece
 	 * @param sc le scanner d'E/S
-	 * @return la piece qu'il a choisit pour son adversaire
+	 * @return la piece que le joueur a choisi pour son adversaire
 	 */
 	public static Piece choixPiece(Partie partie, String nomJoueur, Scanner sc) {
 		Couleur couleur = null;
@@ -23,6 +25,7 @@ public class Joueur {
 		System.out.println(nomJoueur.toUpperCase() + ", veuillez entrer les caracteristiques de la piece s'il-vous-plait.");
 		System.out.println();
 		
+		// Tant que la pièce entrée par le joueur n'est pas disponible, on lui redemande
 		while(!pieceDispo) {
 			String c="", f="", h="", p="";
 			
@@ -103,10 +106,7 @@ public class Joueur {
 			}
 			
 			piece = new Piece(couleur, forme, hauteur, pleineOuCreuse);
-			if(partie.supprimerPiece(piece)) {
-				// System.out.println(partie.getPiecesDisponibles().size());
-				pieceDispo = true;
-			}
+			if(partie.supprimerPiece(piece)) pieceDispo = true;
 			else {
 				System.out.println();
 				System.out.println("CETTE PIÈCE N'EST PLUS DISPONIBLE.");
@@ -118,8 +118,10 @@ public class Joueur {
 	}
 	
 	/**
-	 * Demande au joueur après avoir reçu sa piece, où il veut la deposer
+	 * Demande au joueur où il veut déposer la pièce choisie par l'adversaire
 	 * @param piece que l'adversaire lui a donnée
+	 * @param partie la partie courante
+	 * @param nomJoueur le nom du joueur qui doit déposer la pièce
 	 * @param sc le scanner d'E/S
 	 */
 	public static void deposerPiece(Piece piece, Partie partie, String nomJoueur, Scanner sc) {
@@ -128,6 +130,7 @@ public class Joueur {
 		
 		boolean caseDispo = false;
 		
+		// Tant que la position sélectionnée par le joueur n'est pas disponible, on lui redmande
 		while(!caseDispo) {
 			int i=0, j=0;
 			

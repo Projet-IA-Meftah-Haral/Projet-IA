@@ -6,9 +6,11 @@ import ia.IA;
 import partie.Joueur;
 import partie.Partie;
 
+/**
+ * Comporte la méthode main qui va exécuter le programme
+ */
 public class Principale {
     public static void main(String[] args) throws Exception { 
-
         Scanner sc = new Scanner(System.in);
         
         System.out.println("Bienvenue sur Quarto !");
@@ -93,13 +95,14 @@ public class Principale {
                 System.err.println("Le scanner est déjà fermé");
             }
         } 
+        
         else {
             try {
                 System.out.println();
                 System.out.print("Quel est votre nom ? ");
                 String joueur = sc.nextLine();
                 
-                double premier_tour = Math.random(); //Au 1er tour, le joueur qui commence est choisi aléatoirement
+                double premier_tour = Math.random(); 
                 
                 boolean tourJ1;
                 if(premier_tour <= 0.5) tourJ1 = false;
@@ -126,13 +129,14 @@ public class Principale {
                         System.out.println("VEUILLEZ ENTRER UN CHIFFRE COMPRIS ENTRE 1 ET 3 S'IL-VOUS-PLAIT.");
                     }
                 }
-                //Pour le choix 2 et 3 on utilise l'IA avec une profondeur et Minimax
-                
-                IA ia = new IA(partie, choixDifficulte);
+
+                //Pour le choix 2 et 3 on utilise Minimax et Alpha-Beta avec une profondeur différente
+                IA ia = new IA(partie, 1);
 
                 if (choixDifficulte == 2) {
                     ia = new IA(partie, 1);
-                } else if (choixDifficulte == 3) {
+                } 
+                else if (choixDifficulte == 3) {
                     ia = new IA(partie, 2);
                 }
 
@@ -144,12 +148,12 @@ public class Principale {
                     if(partie.getTourJ1()) {
                         if (choixDifficulte == 1) { //Si niveau facile on applique l'algo random
                             Joueur.deposerPiece(ia.choixPieceRandom(), partie, partie.getJoueur1(), sc);
-                        } else {
+                        } else { //Sinon on applique Minimax
                             Joueur.deposerPiece(ia.choixPiece(), partie, partie.getJoueur1(), sc);
                         }
                     }
                     else {
-                        if (choixDifficulte == 1) { //Si niveau facile on applique l'algo random
+                        if (choixDifficulte == 1) { 
                             ia.deposerPieceRandom(Joueur.choixPiece(partie, partie.getJoueur1(), sc));
                         } else {
                             ia.deposerPiece(Joueur.choixPiece(partie, partie.getJoueur1(), sc));
